@@ -6,6 +6,9 @@ Claude Code 的 AI 竞争情报分析工具。
   <a href="https://github.com/anthropics/claude-code">
     <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   </a>
+  <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill">
+    <img src="https://img.shields.io/badge/Design_System-ui--ux--pro--max-blue?style=flat" alt="UI UX Pro Max">
+  </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   </a>
