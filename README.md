@@ -35,7 +35,7 @@ Instead of manual research, you get an AI-powered pipeline:
 - **Generates professional reports** in Markdown + HTML
 - **Tracks changes** with alerts for pricing and feature updates
 - **Compares multiple competitors** side-by-side
-- **Processes in batch** — analyze 10+ competitors in parallel (~3x speedup)
+- **Processes in batch** — multi-agent parallelism (~3x speedup), each agent has independent context window (no cross-contamination)
 
 ---
 
