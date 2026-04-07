@@ -20,6 +20,23 @@
 | Target Customer | Enterprise / SMB |
 | Geography | Global / US / EMEA |
 
+## Industry Selection
+
+<!-- Which industry vertical best describes your market? -->
+
+| Industry | Description | Default Weight Focus |
+|----------|-------------|---------------------|
+| **AI / Machine Learning** | API providers, model providers, AI platforms | Feature Coverage (25%), Growth Trajectory (20%) |
+| **SaaS / B2B Software** | Cloud software, productivity tools, vertical SaaS | Product Maturity (25%), Feature Coverage (20%) |
+| **FinTech** | Payments, lending, banking, insurance | Pricing (20%), Product Maturity (20%) |
+
+Your industry selection (configured in `config/profile.yml`) determines:
+- Which SWOT questions are used during analysis
+- Which scoring weights are applied
+- Which key metrics are prioritized
+
+**Current Industry:** AI / Machine Learning (default)
+
 ## Archetypes
 
 <!-- Which competitor archetypes are most relevant to your analysis? -->

@@ -17,6 +17,7 @@
 | swot-analysis/ | `data/swot-analysis/` | ALWAYS |
 | profiles/ | `data/profiles/` | ALWAYS |
 | _profile.md | `modes/_profile.md` | ALWAYS (user archetypes, narrative, targets) |
+| _industry-context.md | `modes/_industry-context.md` | ALWAYS (industry-specific SWOT questions) |
 
 **RULE: NEVER hardcode scores or analysis.** Read from the data files at evaluation time.
 **RULE: Read _profile.md AFTER this file. User customizations in _profile.md override defaults here.**
@@ -102,7 +103,7 @@ Classify every competitor into one of these types:
 ### ALWAYS
 
 0. **Pricing:** ALWAYS check for recent pricing data before scoring. Warn if stale.
-1. Read _profile.md and competitors.md before analyzing
+1. Read _profile.md, _industry-context.md, and competitors.md before analyzing
 2. Detect the competitor archetype and adapt analysis per _profile.md
 3. Cite exact sources when scoring
 4. Use WebSearch for current data, pricing, news
@@ -126,6 +127,7 @@ Classify every competitor into one of these types:
 | Read | competitors.md, _profile.md, pricing snapshots |
 | Write | Analysis reports, competitor entries, pricing snapshots |
 | Edit | Update tracker |
+| pricing_analyzer.py | Value scoring and pricing change detection (scripts/pricing_analyzer.py) |
 
 ### TODO: Tavily Integration
 - [ ] Configure Tavily API key in config
@@ -150,6 +152,45 @@ Every analysis report should include:
 5. **Key Findings:** Top 3-5 insights
 6. **Risk Assessment:** Threat level and competitive implications
 7. **Sources:** All data sources used
+
+---
+
+## Internationalization (i18n)
+
+The system supports English and Chinese reports via i18n keys.
+
+### Language Detection
+
+Priority (highest to lowest):
+1. `--lang` flag (e.g., `/comp report --lang zh-CN`)
+2. `config/profile.yml` `language` field
+3. HTTP `Accept-Language` header
+4. Default: `en`
+
+### i18n Files
+
+| File | Purpose |
+|------|---------|
+| `i18n/strings-en.md` | English translations (~50 keys) |
+| `i18n/strings-zh-CN.md` | Chinese translations |
+| `scripts/i18n.py` | I18n class and utilities |
+| `templates/report/html/template-en.html` | English HTML template |
+| `templates/report/html/template-zh-CN.html` | Chinese HTML template |
+
+### Usage
+
+```python
+from scripts.i18n import I18n, detect_language
+
+i18n = I18n()
+lang = i18n.detect_language(config_lang="en", accept_language="zh-CN")
+label = i18n.t("report.title", lang)
+template = i18n.t_template("{report.title} - {report.date}", lang)
+```
+
+### i18n Keys
+
+Keys use dot notation (e.g., `report.title`, `swot.strengths`). Use the `t_template()` method for templates with `{key}` placeholders.
 
 ---
 

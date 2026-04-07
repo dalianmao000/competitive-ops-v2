@@ -12,6 +12,7 @@ Perform a comprehensive analysis of a competitor.
 
 ### 1. Input
 - Company name (normalized)
+- Read industry context from `modes/_industry-context.md` based on configured industry
 
 ### 2. Research Phase
 - [ ] **TODO: TavilySearch Integration**
@@ -30,14 +31,16 @@ Perform a comprehensive analysis of a competitor.
   - Market reports
 
 ### 3. SWOT Analysis
-Generate four-quadrant SWOT:
-- **Strengths:** Product advantages, market position, brand
-- **Weaknesses:** Product gaps, limitations, customer complaints
-- **Opportunities:** Market trends, expansion potential, partnerships
-- **Threats:** Competitive pressure, market shifts, new entrants
+Generate four-quadrant SWOT using industry-specific questions from `_industry-context.md`:
+- **Strengths:** Product advantages, market position, brand (industry-specific)
+- **Weaknesses:** Product gaps, limitations, customer complaints (industry-specific)
+- **Opportunities:** Market trends, expansion potential, partnerships (industry-specific)
+- **Threats:** Competitive pressure, market shifts, new entrants (industry-specific)
+
+Apply the configured industry's scoring weights from `config/industry-profiles.yml`.
 
 ### 4. Scoring Phase
-Score each dimension 1-5:
+Score each dimension 1-5 using industry-adjusted weights from `config/industry-profiles.yml`:
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
@@ -48,7 +51,7 @@ Score each dimension 1-5:
 | Brand Strength | X | [Reason] |
 | Growth Trajectory | X | [Reason] |
 
-**Global Score:** Weighted average
+**Global Score:** Weighted average using industry-specific weights
 
 ### 5. Confidence Assessment
 - **High (4-5):** Multiple current sources, verified data

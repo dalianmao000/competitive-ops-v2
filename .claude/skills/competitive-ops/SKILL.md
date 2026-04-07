@@ -16,16 +16,45 @@ Determine the mode from `{{mode}}`:
 | (empty / no args) | `discovery` -- Show command menu |
 | `setup` | `setup` -- Install dependencies and configure system |
 | `add <company>` | `add` -- Add competitor to tracking |
-| `analyze <company> [html]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output) |
+| `analyze <company> [html] [--lang en\|zh-CN]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output, `--lang` for language) |
 | `compare <A> vs <B> [html]` | `compare` -- Side-by-side comparison (add `html` for HTML output) |
 | `update <company>` | `update` -- Check for changes |
 | `pricing <company> [html]` | `pricing` -- Pricing research (add `html` for HTML output) |
+| `pricing-deep-dive <company>` | `pricing-deep-dive` -- Deep pricing analysis with value scoring |
 | `batch` | `batch` -- Batch processing |
-| `report [html]` | `report` -- Generate consolidated report (add `html` for HTML output) |
+| `report [html] [--lang en\|zh-CN]` | `report` -- Generate consolidated report (add `html` for HTML output, `--lang` for language) |
 | `track` | `track` -- View tracking dashboard |
 | `monitor [interval]` | `monitor` -- Set up scheduled monitoring (default: weekly) |
 | `pdf [report]` | `pdf` -- Export report to PDF |
 | `png [report]` | `png` -- Export report to PNG image |
+
+---
+
+## Language Detection
+
+Reports can be generated in English (`en`) or Chinese (`zh-CN`).
+
+**Priority (highest to lowest):**
+1. `--lang` flag (e.g., `/comp report --lang zh-CN`)
+2. `config/profile.yml` `language` field
+3. HTTP `Accept-Language` header
+4. Default: `en`
+
+**Supported Languages:**
+- `en` -- English (default)
+- `zh-CN` -- Chinese (Simplified)
+
+**Usage Examples:**
+```
+/comp report html --lang en     # English report
+/comp report html --lang zh-CN  # Chinese report
+/comp analyze Anthropic --lang zh-CN  # Chinese analysis
+```
+
+**i18n Implementation:**
+- Translation files: `i18n/strings-{lang}.md`
+- Python module: `scripts/i18n.py` with `I18n` class
+- HTML templates: `templates/report/html/template-{lang}.html`
 
 ---
 
@@ -42,6 +71,7 @@ Available commands:
   /competitive-ops compare <A> vs <B> → Side-by-side feature matrix
   /competitive-ops update <company>   → Check for changes since last analysis
   /competitive-ops pricing <company> → Pricing research with change detection
+  /competitive-ops pricing-deep-dive <company> → Deep pricing analysis with value scoring
   /competitive-ops batch              → Batch process multiple competitors
   /competitive-ops report             → Generate consolidated report
   /competitive-ops track             → View tracking dashboard
@@ -250,6 +280,75 @@ When `{{mode}}` is `pricing`:
    - Generate HTML report with Tailwind dark theme
    - Save to `data/reports/html/pricing-{company}-{date}.html`
 8. Output pricing table
+
+---
+
+## Pricing Deep Dive Mode
+
+When `{{mode}}` is `pricing-deep-dive`:
+
+1. Read `{{company}}` from args
+2. Research comprehensive pricing data from (following fallback order):
+   - Company website (web-fetch first for pricing pages)
+   - G2, Capterra, TrustRadius for verified pricing
+   - News articles mentioning pricing changes
+   - Tavily MCP server for business intelligence
+3. Load previous snapshot from `data/pricing-snapshots/{company}.json` (if exists)
+4. **Build PricingSnapshot using scripts/pricing_analyzer.py:**
+   ```python
+   from scripts.pricing_analyzer import PricingSnapshot, Plan, PricingAnalyzer, save_snapshot
+
+   snapshot = PricingSnapshot(
+       company="CompanyName",
+       last_updated="2026-04-07",
+       plans=[
+           Plan(
+               name="Pro",
+               type="subscription",
+               price=20.0,
+               period="monthly",
+               users=10,
+               api_access=True,
+               price_per_1m_input=1.0,
+               price_per_1m_output=3.0,
+               features=["API Access", "Advanced Analytics", "Priority Support"]
+           )
+       ],
+       enterprise=True,
+       free_tier=True,
+       sources=["https://example.com/pricing"]
+   )
+   ```
+5. **Compute value scores using PricingAnalyzer:**
+   ```python
+   analyzer = PricingAnalyzer(subscription_baseline=10.0, api_baseline=1.0)
+   for plan in snapshot.plans:
+       score = analyzer.compute_value_score(plan)
+       print(f"{plan.name}: {score:.2f}")
+   ```
+6. **Detect changes using PricingChangeDetector:**
+   ```python
+   from scripts.pricing_analyzer import PricingChangeDetector
+
+   detector = PricingChangeDetector(any_change=True)  # Alert on ANY change
+   if old_snapshot:
+       changes = detector.detect_change(old_snapshot, new_snapshot)
+       for change in changes:
+           print(f"ALERT: {change.description}")
+   ```
+7. **Save snapshot to `data/pricing-snapshots/{company}.json`**
+8. **Generate deep dive report using template:**
+   - Read `templates/report/markdown/pricing-deep-dive-template.md`
+   - Fill in all sections: Executive Summary, Value Comparison, Plan Breakdown, Pricing History, Alert Log
+   - Save to `data/reports/{date}/pricing-deep-dive-{company}-{date}.md`
+9. Output summary with value scores and any detected changes
+
+**Key Features:**
+- Value Score = (Feature Count / Price) * Market Normalization Factor
+- AI API baseline: $1/1M tokens = score 3.0
+- SaaS baseline: $10/user/mo = score 3.0
+- **ANY pricing change triggers alert** (no threshold)
+- Stores $/token data in JSON format for programmatic access
 
 ---
 
@@ -558,6 +657,8 @@ Classify competitors into:
 | Latest Symlink | `data/reports/latest/{company}.md` → `../{date}/{company}-{date}.md` |
 | Comparison Report | `data/reports/{date}/compare-{A}-vs-{B}-{date}.md` |
 | Pricing Report | `data/reports/{date}/pricing-{company}-{date}.md` |
+| Pricing Deep Dive Report | `data/reports/{date}/pricing-deep-dive-{company}-{date}.md` |
+| Pricing Snapshot (JSON) | `data/pricing-snapshots/{company}.json` |
 | Consolidated Report | `data/reports/{date}/consolidated-{date}.md` |
 | HTML Report | `data/reports/html/{company}-{date}.html` |
 | PDF Report | `data/reports/pdf/{date}/{company}-{date}.pdf` |

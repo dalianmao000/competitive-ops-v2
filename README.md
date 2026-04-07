@@ -96,12 +96,13 @@ claude
 |---------|-------------|
 | `/competitive-ops setup` | Install dependencies and configure system |
 | `/competitive-ops add <company>` | Add a competitor to tracking |
-| `/competitive-ops analyze <company>` | Full analysis: SWOT + scoring + HTML report |
+| `/competitive-ops analyze <company> [--lang en\|zh-CN]` | Full analysis: SWOT + scoring + HTML report |
 | `/competitive-ops compare <A> vs <B>` | Side-by-side feature matrix |
 | `/competitive-ops update <company>` | Check for changes since last analysis |
 | `/competitive-ops pricing <company>` | Pricing research with change detection |
+| `/competitive-ops pricing-deep-dive <company>` | Deep pricing analysis with value scoring |
 | `/competitive-ops batch` | Batch process multiple competitors (supports `tier 1/2/3` filter) |
-| `/competitive-ops report` | Generate consolidated report |
+| `/competitive-ops report [--lang en\|zh-CN]` | Generate consolidated report |
 | `/competitive-ops track` | View tracking dashboard |
 | `/competitive-ops monitor [daily\|weekly\|monthly]` | Set up scheduled monitoring (uses `/loop` for continuous updates) |
 | `/competitive-ops pdf [report]` | Export report to PDF (uses Playwright) |
@@ -141,6 +142,48 @@ Data is cross-validated from multiple sources:
 | 🟡 Medium | 2 sources agree |
 | 🔴 Low | Conflicting or insufficient data |
 
+### Multi-Language Reports
+
+Reports can be generated in English or Chinese:
+
+```bash
+/competitive-ops report --lang zh-CN  # Chinese report
+/competitive-ops analyze Anthropic --lang en  # English analysis
+```
+
+**Language Detection Priority:**
+1. `--lang` flag
+2. `config/profile.yml` → `language` field
+3. Default: English
+
+### Industry Templates
+
+Industry-specific SWOT questions and scoring weights:
+
+| Industry | Focus | Key Metrics |
+|----------|-------|-------------|
+| AI (default) | Model capabilities, API pricing | Tokens/$, context window |
+| SaaS | MRR, churn, NPS | Net Revenue Retention, integrations |
+| FinTech | Compliance, security | Transaction volume, fraud rate |
+
+Set in `config/profile.yml`:
+```yaml
+company:
+  industry: "saas"  # ai, saas, or fintech
+```
+
+### Pricing Deep Dive
+
+Track competitor pricing changes with value scoring:
+
+```bash
+/competitive-ops pricing-deep-dive Anthropic
+```
+
+- **Value Score** = (Feature Count / Price) × Market Normalization
+- **ANY pricing change triggers alert** (no threshold)
+- Stores snapshots in `data/pricing-snapshots/{company}.json`
+
 ---
 
 ## Project Structure
@@ -150,25 +193,40 @@ competitive-ops-v2/
 ├── CLAUDE.md                        # Project instructions
 ├── cv.md                           # Your product definition (user layer)
 ├── config/
-│   └── profile.yml                # Company/product config (user layer)
+│   ├── profile.yml                # Company/product config (user layer)
+│   └── industry-profiles.yml      # Industry configurations (AI/SaaS/FinTech)
 ├── .claude/skills/competitive-ops/ # Skill definitions
 │   ├── SKILL.md                   # Router + mode definitions
 │   └── modes/
 │       └── batch.md               # Batch mode implementation
 ├── scripts/                        # Python utilities
+│   ├── pricing_analyzer.py        # Value scoring & change detection
+│   └── i18n.py                   # Multi-language support
+├── i18n/                           # Translation strings
+│   ├── strings-en.md             # English strings
+│   └── strings-zh-CN.md          # Chinese strings
+├── templates/
+│   └── report/
+│       ├── markdown/              # Markdown templates
+│       │   ├── swot-template-ai.md
+│       │   ├── swot-template-saas.md
+│       │   └── swot-template-fintech.md
+│       └── html/                  # HTML templates
+│           ├── template-en.html
+│           └── template-zh-CN.html
+├── modes/
+│   └── _industry-context.md      # Industry-specific SWOT questions
 ├── data/
 │   ├── competitors.md              # Competitor tracker
 │   ├── batch-queue.md             # Batch queue (companies to analyze)
 │   ├── batch-status.json          # Batch processing status
+│   ├── pricing-snapshots/         # JSON pricing snapshots
+│   │   └── {company}.json
 │   ├── reports/
 │   │   ├── {date}/               # Dated report directories
 │   │   │   ├── {company}-{date}.md
+│   │   │   ├── pricing-deep-dive-{company}-{date}.md
 │   │   │   └── consolidated-{date}.md
-│   │   ├── latest/               # Symlinks to latest reports
-│   │   │   └── {company}.md → ../{date}/{company}-{date}.md
-│   │   ├── html/                 # HTML reports (ECharts interactive)
-│   │   │   ├── {company}-{date}.html
-│   │   │   └── index.html        # Consolidated HTML report
 │   │   └── pdf/                  # PDF exports
 │   │       └── {date}/
 │   │           └── {report}-{date}.pdf
