@@ -18,7 +18,7 @@ Claude Code 的 AI 竞争情报分析工具。
 
 ## 这是什么
 
-Competitive-Ops 是一个 **Claude Code Skill** — 通过 slash command 扩展，将 Claude Code 变成**竞争情报指挥中心**。
+Competitive-Ops 是一个 **Claude Code Skill** — 可通过 `/competitive-ops` 或自然语言触发（如"分析 Anthropic"），将 Claude Code 变成**竞争情报指挥中心**。
 
 ### 解决的痛点
 

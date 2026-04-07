@@ -18,7 +18,7 @@ AI-powered competitive analysis pipeline for Claude Code.
 
 ## What Is This
 
-Competitive-Ops is a **Claude Code Skill** — a slash-command extension that turns Claude Code into a **competitive intelligence command center**.
+Competitive-Ops is a **Claude Code Skill** — callable via `/competitive-ops` or natural language (e.g., "analyze Anthropic"), it turns Claude Code into a **competitive intelligence command center**.
 
 ### Pain Points Solved
 
