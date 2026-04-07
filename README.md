@@ -83,6 +83,7 @@ claude
 
 | Command | Description |
 |---------|-------------|
+| `/competitive-ops setup` | Install dependencies and configure system |
 | `/competitive-ops add <company>` | Add a competitor to tracking |
 | `/competitive-ops analyze <company>` | Full analysis: SWOT + scoring + HTML report |
 | `/competitive-ops compare <A> vs <B>` | Side-by-side feature matrix |

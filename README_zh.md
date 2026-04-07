@@ -80,6 +80,7 @@ export TAVILY_API_KEY="tvly-xxxxx"
 
 | 命令 | 说明 |
 |------|------|
+| `/competitive-ops setup` | 安装依赖并配置系统 |
 | `/competitive-ops add <公司>` | 添加竞品到追踪列表 |
 | `/competitive-ops analyze <公司>` | 完整分析：SWOT + 评分 + HTML 报告 |
 | `/competitive-ops compare <A> vs <B>` | 横向功能矩阵对比 |

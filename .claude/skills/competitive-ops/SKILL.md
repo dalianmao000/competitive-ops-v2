@@ -14,6 +14,7 @@ Determine the mode from `{{mode}}`:
 | Input | Mode |
 |-------|------|
 | (empty / no args) | `discovery` -- Show command menu |
+| `setup` | `setup` -- Install dependencies and configure system |
 | `add <company>` | `add` -- Add competitor to tracking |
 | `analyze <company> [html]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output) |
 | `compare <A> vs <B> [html]` | `compare` -- Side-by-side comparison (add `html` for HTML output) |
