@@ -101,6 +101,9 @@ export TAVILY_API_KEY="tvly-xxxxx"
 | `/competitive-ops batch` | 批量处理多个竞品（支持 tier 1/2/3 过滤） |
 | `/competitive-ops report` | 生成综合报告 |
 | `/competitive-ops track` | 查看追踪面板 |
+| `/competitive-ops monitor [daily\|weekly\|monthly]` | 设置定时监控（使用 /loop 持续更新） |
+| `/competitive-ops pdf [报告]` | 导出报告为 PDF（使用 Playwright） |
+| `/competitive-ops png [报告]` | 导出报告为 PNG 图片（使用 Playwright） |
 
 ### 评分系统
 
@@ -161,12 +164,17 @@ competitive-ops-v2/
 │   │   │   └── consolidated-{date}.md
 │   │   ├── latest/               # 最新报告 symlink
 │   │   │   └── {company}.md → ../{date}/{company}-{date}.md
-│   │   └── html/                 # HTML 报告
-│   │       ├── {company}-{date}.html
-│   │       └── index.html        # 综合 HTML 报告
+│   │   ├── html/                 # HTML 报告（ECharts 交互图表）
+│   │   │   ├── {company}-{date}.html
+│   │   │   └── index.html        # 综合 HTML 报告
+│   │   └── pdf/                  # PDF 导出
+│   │       └── {date}/
+│   │           └── {report}-{date}.pdf
 │   └── snapshots/                 # 历史数据（用于 diff 追踪）
-│       └── {company}/
-│           └── {date}.json
+│       ├── {company}/
+│       │   └── {date}.json
+│       └── pricing/              # 定价变化快照
+│           └── {company}.json
 ```
 
 ---
@@ -222,6 +230,35 @@ data/reports/
 - 四象限 SWOT 分析
 - 关键发现与风险评估
 - 含所有竞品对比的综合索引页
+- **ECharts 交互图表：**
+  - 综合评分排名柱状图
+  - 六维能力雷达图
+  - API 定价格局热力图
+- **定价变化 Alert** 带 🔴 变化徽章
+
+### PDF 导出
+
+导出报告用于外部分享：
+```bash
+node scripts/export_pdf.js data/reports/html/index.html
+```
+- 使用 Playwright 等待 ECharts 渲染
+- A4 格式，15mm 边距
+- 页脚含页码
+- CSS page-break 控制防止分页打断
+
+### PNG 导出
+
+导出报告为高清图片：
+```bash
+node scripts/export_image.js data/reports/html/index.html
+node scripts/export_image.js data/reports/html/index.html --full  # 全页截图
+node scripts/export_image.js data/reports/html/index.html --jpeg   # JPEG 格式
+```
+- ECharts 完整渲染
+- 保留深色背景
+- 默认 PNG，支持 JPEG
+- 支持视口或全页截图
 
 ---
 

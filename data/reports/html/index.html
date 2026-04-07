@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 竞争格局综合报告 -- 2026-04-07</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        /* PDF page break control */
+        section { page-break-inside: avoid; break-inside: avoid; }
+        div { page-break-inside: avoid; break-inside: avoid; }
+        table { page-break-inside: avoid; break-inside: avoid; }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen">
@@ -36,23 +41,26 @@
                 执行摘要
             </h2>
             <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="text-center">
-                        <p class="text-sm text-gray-400 mb-1">Tier 1 均分</p>
-                        <p class="text-4xl font-bold text-green-400">81.4</p>
-                        <p class="text-xs text-gray-500">直接竞争者</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-sm text-gray-400 mb-1">Tier 2 均分</p>
-                        <p class="text-4xl font-bold text-blue-400">74.7</p>
-                        <p class="text-xs text-gray-500">间接竞争者</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-sm text-gray-400 mb-1">覆盖公司</p>
-                        <p class="text-4xl font-bold text-purple-400">7</p>
-                        <p class="text-xs text-gray-500">Tier 1: 3 | Tier 2: 4</p>
-                    </div>
-                </div>
+                <!-- KPIs Row - Table layout for reliable PDF rendering -->
+                <table class="w-full mb-6 text-center">
+                    <tr>
+                        <td class="py-2">
+                            <p class="text-sm text-gray-400">Tier 1 均分</p>
+                            <p class="text-3xl font-bold text-green-400">81.4</p>
+                            <p class="text-xs text-gray-500">直接竞争者</p>
+                        </td>
+                        <td class="py-2">
+                            <p class="text-sm text-gray-400">Tier 2 均分</p>
+                            <p class="text-3xl font-bold text-blue-400">74.7</p>
+                            <p class="text-xs text-gray-500">间接竞争者</p>
+                        </td>
+                        <td class="py-2">
+                            <p class="text-sm text-gray-400">覆盖公司</p>
+                            <p class="text-3xl font-bold text-purple-400">7</p>
+                            <p class="text-xs text-gray-500">Tier 1: 3 | Tier 2: 4</p>
+                        </td>
+                    </tr>
+                </table>
                 <div class="border-t border-gray-700 pt-4">
                     <h3 class="text-sm font-semibold text-white mb-3">2026年4月核心主题</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -157,6 +165,219 @@
             </div>
         </section>
 
+        <!-- Interactive Charts -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                </svg>
+                可视化分析
+            </h2>
+
+            <!-- Score Bar Chart -->
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800 mb-4" style="page-break-inside: avoid;">
+                <h3 class="text-lg font-semibold text-white mb-4">综合评分排名</h3>
+                <div id="scoreBarChart" style="width: 100%; height: 320px;"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Radar Chart -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-800" style="page-break-inside: avoid;">
+                    <h3 class="text-lg font-semibold text-white mb-4">六维能力雷达图</h3>
+                    <div id="radarChart" style="width: 100%; height: 400px;"></div>
+                </div>
+
+                <!-- Pricing Heatmap -->
+                <div class="bg-gray-900 rounded-xl p-6 border border-gray-800" style="page-break-inside: avoid;">
+                    <h3 class="text-lg font-semibold text-white mb-4">API 定价格局热力图</h3>
+                    <div id="pricingHeatmap" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+        // Score Bar Chart
+        var scoreBarChart = echarts.init(document.getElementById('scoreBarChart'), 'dark');
+        scoreBarChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' },
+                formatter: function(params) {
+                    return params[0].name + '<br/>' +
+                           '综合评分: <strong style="color:#10b981;font-size:16px">' + params[0].value + '</strong> / 100';
+                }
+            },
+            grid: { left: '15%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+            xAxis: {
+                type: 'value',
+                max: 100,
+                axisLine: { lineStyle: { color: '#4b5563' } },
+                axisLabel: { color: '#9ca3af' },
+                splitLine: { lineStyle: { color: '#374151' } }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['Cohere', 'Meta AI', 'xAI', 'Mistral', 'Anthropic', 'Google DeepMind', 'OpenAI'],
+                inverse: true,
+                axisLine: { lineStyle: { color: '#4b5563' } },
+                axisLabel: { color: '#9ca3af', fontSize: 12 }
+            },
+            series: [{
+                name: '综合评分',
+                type: 'bar',
+                data: [68.0, 74.7, 78.0, 78.5, 79.6, 82.3, 82.3],
+                itemStyle: {
+                    color: function(params) {
+                        var colors = ['#6b7280', '#3b82f6', '#a855f7', '#3b82f6', '#10b981', '#10b981', '#10b981'];
+                        return colors[params.dataIndex];
+                    },
+                    borderRadius: [0, 4, 4, 0]
+                },
+                label: {
+                    show: true,
+                    position: 'right',
+                    color: '#9ca3af',
+                    formatter: '{c}'
+                }
+            }]
+        });
+
+        // Radar Chart
+        var radarChart = echarts.init(document.getElementById('radarChart'), 'dark');
+        radarChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                borderColor: '#374151',
+                textStyle: { color: '#f3f4f6' }
+            },
+            legend: {
+                right: 5,
+                top: 'center',
+                orient: 'vertical',
+                itemWidth: 8,
+                itemHeight: 8,
+                itemGap: 4,
+                textStyle: { color: '#9ca3af', fontSize: 8 },
+                data: ['OpenAI', 'Google', 'Anthropic', 'Mistral', 'xAI', 'Meta AI', 'Cohere']
+            },
+            grid: {
+                left: 5,
+                right: 60,
+                top: 5,
+                bottom: 5
+            },
+            radar: {
+                indicator: [
+                    { name: '产品成熟度', max: 100 },
+                    { name: '功能覆盖', max: 100 },
+                    { name: '定价', max: 100 },
+                    { name: '市场存在', max: 100 },
+                    { name: '增长轨迹', max: 100 },
+                    { name: '品牌实力', max: 100 }
+                ],
+                axisName: { color: '#9ca3af', fontSize: 11 },
+                splitArea: { areaStyle: { color: ['rgba(55, 65, 81, 0.2)', 'rgba(55, 65, 81, 0.4)'] } },
+                axisLine: { lineStyle: { color: '#4b5563' } },
+                splitLine: { lineStyle: { color: '#374151' } }
+            },
+            series: [{
+                type: 'radar',
+                data: [
+                    { value: [96, 97, 68, 98, 90, 98], name: 'OpenAI', lineStyle: { color: '#10b981' }, areaStyle: { color: 'rgba(16, 185, 129, 0.3)' } },
+                    { value: [90, 94, 88, 92, 90, 95], name: 'Google', lineStyle: { color: '#3b82f6' }, areaStyle: { color: 'rgba(59, 130, 246, 0.3)' } },
+                    { value: [92, 93, 85, 82, 90, 85], name: 'Anthropic', lineStyle: { color: '#f59e0b' }, areaStyle: { color: 'rgba(245, 158, 11, 0.3)' } },
+                    { value: [80, 80, 70, 70, 90, 70], name: 'Mistral', lineStyle: { color: '#8b5cf6' }, areaStyle: { color: 'rgba(139, 92, 246, 0.3)' } },
+                    { value: [80, 84, 90, 70, 90, 80], name: 'xAI', lineStyle: { color: '#ec4899' }, areaStyle: { color: 'rgba(236, 72, 153, 0.3)' } },
+                    { value: [80, 84, 96, 90, 80, 60], name: 'Meta AI', lineStyle: { color: '#06b6d4' }, areaStyle: { color: 'rgba(6, 182, 212, 0.3)' } },
+                    { value: [70, 80, 70, 70, 80, 60], name: 'Cohere', lineStyle: { color: '#6b7280' }, areaStyle: { color: 'rgba(107, 114, 128, 0.3)' } }
+                ]
+            }]
+        });
+
+        // Pricing Heatmap
+        var pricingHeatmap = echarts.init(document.getElementById('pricingHeatmap'), 'dark');
+        var pricingData = [
+            ['Meta AI', 'Llama', 0.00022],
+            ['Google', 'Gemini 3.1', 0.10],
+            ['xAI', 'Grok 4.1', 0.20],
+            ['Mistral', 'Large 3', 2.00],
+            ['OpenAI', 'GPT-5 Mini', 0.25],
+            ['OpenAI', 'GPT-5', 1.25],
+            ['Anthropic', 'Haiku 3.5', 0.80],
+            ['Anthropic', 'Sonnet 4.6', 3.00],
+            ['Anthropic', 'Opus 4.6', 5.00]
+        ];
+        var companies = ['Meta AI', 'Google', 'xAI', 'Mistral', 'OpenAI', 'Anthropic'];
+        var models = ['Llama', 'Gemini 3.1', 'Grok 4.1', 'Large 3', 'GPT-5 Mini', 'GPT-5', 'Haiku 3.5', 'Sonnet 4.6', 'Opus 4.6'];
+        var convertedData = pricingData.map(function(item) {
+            return [companies.indexOf(item[0]), models.indexOf(item[1]), item[2]];
+        });
+        pricingHeatmap.setOption({
+            tooltip: {
+                formatter: function(params) {
+                    var d = pricingData[params.dataIndex];
+                    return d[0] + ' ' + d[1] + '<br/>Input: <strong>$' + d[2].toFixed(4) + '</strong>/1M';
+                },
+                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                borderColor: '#374151',
+                textStyle: { color: '#f3f4f6' }
+            },
+            grid: { left: '12%', right: '5%', bottom: '25%', top: '5%' },
+            xAxis: {
+                type: 'category',
+                data: models,
+                axisLabel: { color: '#9ca3af', fontSize: 9, rotate: 45, interval: 0, margin: 8 },
+                axisLine: { lineStyle: { color: '#4b5563' } },
+                splitArea: { show: true, areaStyle: { color: ['rgba(55, 65, 81, 0.1)', 'rgba(55, 65, 81, 0.2)'] } }
+            },
+            yAxis: {
+                type: 'category',
+                data: companies,
+                axisLabel: { color: '#9ca3af', fontSize: 10 },
+                axisLine: { lineStyle: { color: '#4b5563' } }
+            },
+            visualMap: {
+                min: 0,
+                max: 5,
+                calculable: true,
+                orient: 'horizontal',
+                left: 'center',
+                bottom: '0%',
+                inRange: {
+                    color: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+                },
+                textStyle: { color: '#9ca3af' },
+                formatter: function(value) {
+                    return '$' + value.toFixed(2);
+                }
+            },
+            series: [{
+                type: 'heatmap',
+                data: convertedData,
+                label: {
+                    show: true,
+                    formatter: function(params) {
+                        return '$' + pricingData[params.dataIndex][2].toFixed(2);
+                    },
+                    color: '#fff',
+                    fontSize: 10
+                },
+                emphasis: {
+                    itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0, 0, 0, 0.5)' }
+                }
+            }]
+        });
+
+        // Responsive
+        window.addEventListener('resize', function() {
+            scoreBarChart.resize();
+            radarChart.resize();
+            pricingHeatmap.resize();
+        });
+        </script>
+
         <!-- Score Matrix -->
         <section class="mb-8">
             <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
@@ -250,16 +471,17 @@
         </section>
 
         <!-- Pricing Landscape -->
-        <section class="mb-8">
+        <section class="mb-8" style="page-break-inside: avoid;">
             <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
                 <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 API 定价格局 (每 1M tokens)
+                <span class="ml-2 text-xs bg-red-900 text-red-300 px-2 py-1 rounded">3 变化检测</span>
             </h2>
-            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800" style="page-break-inside: avoid;">
                 <div class="overflow-x-auto">
-                    <table class="w-full">
+                    <table class="w-full" style="page-break-inside: avoid;">
                         <thead>
                             <tr class="border-b border-gray-700">
                                 <th class="text-left py-3 px-3 text-sm font-medium text-gray-400">公司</th>
@@ -329,14 +551,48 @@
                             <tr>
                                 <td class="py-3 px-3 text-white font-medium">Anthropic</td>
                                 <td class="py-3 px-3 text-gray-400 text-sm">Opus 4.6</td>
-                                <td class="py-3 px-3 text-right text-blue-400">$5.00</td>
-                                <td class="py-3 px-3 text-right text-blue-400">$25.00</td>
+                                <td class="py-3 px-3 text-right">
+                                    <span class="text-blue-400 font-bold">$5.00</span>
+                                    <span class="ml-2 text-xs bg-red-900 text-red-300 px-1.5 py-0.5 rounded">🔴 -67%</span>
+                                </td>
+                                <td class="py-3 px-3 text-right">
+                                    <span class="text-blue-400">$25.00</span>
+                                    <span class="ml-2 text-xs bg-red-900 text-red-300 px-1.5 py-0.5 rounded">🔴 -67%</span>
+                                </td>
                                 <td class="py-3 px-3 text-gray-400 text-xs">高端 (降价67%)</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <p class="text-sm text-gray-500 mt-4 text-center">API 定价跨越 3 个数量级 ($0.00022 - $25)，价格战白热化</p>
+
+                <!-- Price Change Alerts (动态渲染) -->
+                <div id="pricingAlerts" class="mt-4 pt-4 border-t border-gray-700">
+                    <h4 class="text-sm font-semibold text-red-400 mb-3 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        近期定价变化
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                            <p class="text-red-300 text-sm font-semibold">Anthropic Opus 4.6</p>
+                            <p class="text-gray-400 text-xs mt-1">输入: $15 → $5 <span class="text-red-400">(-67%)</span></p>
+                            <p class="text-gray-400 text-xs">输出: $75 → $25 <span class="text-red-400">(-67%)</span></p>
+                            <p class="text-gray-500 text-xs mt-1">2026年3月</p>
+                        </div>
+                        <div class="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                            <p class="text-red-300 text-sm font-semibold">OpenAI o3</p>
+                            <p class="text-gray-400 text-xs mt-1">降价幅度约 <span class="text-red-400">-80%</span></p>
+                            <p class="text-gray-500 text-xs mt-1">2026年3月</p>
+                        </div>
+                        <div class="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                            <p class="text-red-300 text-sm font-semibold">Google Gemini</p>
+                            <p class="text-gray-400 text-xs mt-1">新增 Flex/Priority/Batch/Caching 分层</p>
+                            <p class="text-gray-500 text-xs mt-1">2026年4月</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

@@ -103,6 +103,9 @@ claude
 | `/competitive-ops batch` | Batch process multiple competitors (supports `tier 1/2/3` filter) |
 | `/competitive-ops report` | Generate consolidated report |
 | `/competitive-ops track` | View tracking dashboard |
+| `/competitive-ops monitor [daily\|weekly\|monthly]` | Set up scheduled monitoring (uses `/loop` for continuous updates) |
+| `/competitive-ops pdf [report]` | Export report to PDF (uses Playwright) |
+| `/competitive-ops png [report]` | Export report to PNG image (uses Playwright) |
 
 ### Scoring System
 
@@ -163,12 +166,18 @@ competitive-ops-v2/
 │   │   │   └── consolidated-{date}.md
 │   │   ├── latest/               # Symlinks to latest reports
 │   │   │   └── {company}.md → ../{date}/{company}-{date}.md
-│   │   └── html/                 # HTML reports
-│   │       ├── {company}-{date}.html
-│   │       └── index.html        # Consolidated HTML report
-│   └── snapshots/                 # Historical data for diff tracking
-│       └── {company}/
-│           └── {date}.json
+│   │   ├── html/                 # HTML reports (ECharts interactive)
+│   │   │   ├── {company}-{date}.html
+│   │   │   └── index.html        # Consolidated HTML report
+│   │   └── pdf/                  # PDF exports
+│   │       └── {date}/
+│   │           └── {report}-{date}.pdf
+│   ├── snapshots/                 # Historical data for diff tracking
+│   │   ├── {company}/
+│   │   │   └── {date}.json
+│   │   └── pricing/              # Pricing change snapshots
+│   │       └── {company}.json
+│   └── .monitor-schedule.json     # Scheduled monitoring config
 ```
 
 ---
@@ -224,7 +233,36 @@ Professional, responsive HTML reports with Tailwind dark theme:
 - Scoring matrix with progress bars
 - SWOT analysis in 4-quadrant grid
 - Key findings and risk assessment
-- Consolidated index with all competitor comparisons
+- **Interactive ECharts visualizations:**
+  - Score bar chart (ranking by overall score)
+  - Radar chart (6 dimensions across all competitors)
+  - Pricing heatmap (API prices by model)
+- **Pricing change alerts** with 🔴 delta badges
+- **PDF export** with Playwright rendering and page-break control
+
+### PDF Export
+
+Export reports for external sharing:
+```bash
+node scripts/export_pdf.js data/reports/html/index.html
+```
+- Uses Playwright to wait for ECharts rendering
+- A4 format with 15mm margins
+- Page numbers in footer
+- CSS page-break control prevents section splitting
+
+### PNG Export
+
+Export reports as high-resolution images:
+```bash
+node scripts/export_image.js data/reports/html/index.html
+node scripts/export_image.js data/reports/html/index.html --full  # Full page
+node scripts/export_image.js data/reports/html/index.html --jpeg   # JPEG format
+```
+- Captures ECharts with full rendering
+- Dark background preserved
+- PNG default, JPEG option available
+- Viewport or full page capture modes
 
 ---
 

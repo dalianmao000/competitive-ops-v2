@@ -23,6 +23,9 @@ Determine the mode from `{{mode}}`:
 | `batch` | `batch` -- Batch processing |
 | `report [html]` | `report` -- Generate consolidated report (add `html` for HTML output) |
 | `track` | `track` -- View tracking dashboard |
+| `monitor [interval]` | `monitor` -- Set up scheduled monitoring (default: weekly) |
+| `pdf [report]` | `pdf` -- Export report to PDF |
+| `png [report]` | `png` -- Export report to PNG image |
 
 ---
 
@@ -42,6 +45,9 @@ Available commands:
   /competitive-ops batch              → Batch process multiple competitors
   /competitive-ops report             → Generate consolidated report
   /competitive-ops track             → View tracking dashboard
+  /competitive-ops monitor [daily|weekly|monthly] → Set up scheduled monitoring
+  /competitive-ops pdf [report]      → Export report to PDF
+  /competitive-ops png [report]      → Export report to PNG image
 
 First time? Say "setup" to configure your company info.
 ```
@@ -56,25 +62,25 @@ If `{{mode}}` is "setup":
 
 Check for required tools and install if missing:
 
-1. **Playwright** for screenshots (强制安装):
-   - Run: `npx playwright install chromium` (无条件执行，确保Chromium可用)
+1. **Playwright** for screenshots (required):
+   - Run: `npx playwright install chromium`
    - Verify: `npx playwright --version`
 
 2. **ui-ux-pro-max** for HTML reports:
-   - Install: `npx -y uipro-cli init --ai claude` (in项目目录)
-   - Skill 位置: `{project}/.claude/skills/ui-ux-pro-max/`
-   - 调用方式: `/skill ui-ux-pro-max`
+   - Install: `npx -y uipro-cli init --ai claude` (in project directory)
+   - Skill location: `{project}/.claude/skills/ui-ux-pro-max/`
+   - Usage: `/skill ui-ux-pro-max`
 
 3. **Tavily MCP** (optional, for fallback search):
    - Correct package name: `tavily-mcp` (NOT `@tavily/tavily-mcp`)
    - Add with: `claude mcp add tavily -- npx -y tavily-mcp`
    - Set API key: `TAVILY_API_KEY=your_key`
 
-4. **Python dependencies** (强制安装，优先使用虚拟环境):
+4. **Python dependencies** (required, use virtual environment):
    ```bash
    python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
    ```
-   - 或直接安装: `pip install -r requirements.txt` (in项目目录)
+   - Or directly: `pip install -r requirements.txt` (in project directory)
 
 ### Step 2: Configure System
 
@@ -308,10 +314,177 @@ When `{{mode}}` is `report`:
 3. Generate consolidated report in `data/reports/{date}/consolidated-{date}.md`
 4. **If `html` flag is present in args:**
    - Read the consolidated markdown report
-   - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
-   - Generate HTML report with Tailwind dark theme
+   - **Generate HTML with ECharts visualizations:**
+     - Score bar chart (ranking by overall score)
+     - Radar chart (6 dimensions across all competitors)
+     - Pricing heatmap (input/output prices by model)
+   - **Pricing change detection:**
+     - Compare with `data/snapshots/pricing/{company}.json`
+     - Highlight price changes with 🔴 alert badges
+     - Show delta (e.g., "-67%", "+20%")
+   - Generate HTML report with Tailwind dark theme + ECharts
    - Save to `data/reports/html/index.html`
 5. Output path to report (include HTML path if generated)
+
+**ECharts Integration:**
+- Use ECharts 5.x via CDN: `https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js`
+- Charts should be responsive and dark-themed to match Tailwind dark mode
+
+**HTML Template CSS (include in `<head>`):**
+```html
+<style>
+    section { page-break-inside: avoid; break-inside: avoid; }
+    div { page-break-inside: avoid; break-inside: avoid; }
+    table { page-break-inside: avoid; break-inside: avoid; }
+</style>
+```
+Every section, inner div, and table should have `page-break-inside: avoid` to prevent content from splitting across PDF pages.
+
+**Chart Layout Guidelines:**
+- Bar chart: Grid left margin ~15% to prevent y-axis label cutoff, height 320px
+- Radar chart: Legend positioned on right (vertical) to avoid overlap with 7 companies, height 400px
+- Heatmap: Model names shortened (e.g., "Gemini 3.1 Flash" → "Gemini 3.1") to prevent label overlap, height 400px
+- Use `grid-cols-2` for radar + heatmap side-by-side layout
+- Include tooltips showing exact values on hover
+
+---
+
+## Monitor Mode
+
+When `{{mode}}` is `monitor`:
+
+Use `/loop` skill to set up continuous competitive intelligence monitoring:
+
+1. Read optional `interval` from args (e.g., `monitor daily`, `monitor weekly`)
+   - Default: weekly
+   - Options: `daily`, `weekly`, `monthly`
+2. Parse companies from `data/competitors.md`
+3. Set up cron job using `/loop`:
+   ```
+   /loop [interval] /competitive-ops update [company]
+   ```
+4. For full batch monitoring:
+   ```
+   /loop [interval] /competitive-ops batch
+   ```
+5. Store schedule in `data/.monitor-schedule.json`:
+   ```json
+   {
+     "enabled": true,
+     "interval": "weekly",
+     "last_run": "2026-04-07",
+     "next_run": "2026-04-14",
+     "companies": ["Anthropic", "OpenAI", "..."]
+   }
+   ```
+6. Output confirmation with schedule details
+
+**Available Intervals:**
+- `daily` -- 57 8 * * * (8:57 AM local, off-minute to avoid load spike)
+- `weekly` -- 57 8 * * 1 (Monday 8:57 AM local)
+- `monthly` -- 57 8 1 * * (1st of month 8:57 AM local)
+
+**Monitoring Scope:**
+- Tier 1 competitors: Weekly update recommended
+- Tier 2 competitors: Bi-weekly acceptable
+- Pricing changes: Monthly review
+
+---
+
+## PDF Mode
+
+When `{{mode}}` is `pdf`:
+
+Export reports to PDF for external sharing:
+
+1. Read optional `report` arg (default: latest consolidated report)
+   - `pdf` → export `data/reports/html/index.html`
+   - `pdf anthropic` → export `data/reports/html/anthropic-{date}.html`
+2. Run PDF export script:
+   ```bash
+   node scripts/export_pdf.js data/reports/html/index.html
+   ```
+   The script uses Playwright to:
+   - Wait for ECharts to fully render (3 second delay)
+   - Verify 3 ECharts instances are present
+   - Generate A4 PDF with header/footer
+3. Save PDF to `data/reports/pdf/{date}/{report}-{date}.pdf`
+4. Output PDF path and file size
+
+**PDF Script Implementation (`scripts/export_pdf.js`):**
+```javascript
+const { chromium } = require('playwright');
+// - Launches headless Chromium
+// - Sets viewport to 1200x1600 for proper rendering
+// - Waits for networkidle + 3s for ECharts
+// - Generates A4 PDF with margins and page numbers
+// - Adds footer: "Page X of Y | competitive-ops v2 | {date}"
+```
+
+**HTML CSS for PDF Page Breaks:**
+Add to `<head>` of HTML reports:
+```html
+<style>
+    section { page-break-inside: avoid; break-inside: avoid; }
+    div { page-break-inside: avoid; break-inside: avoid; }
+    table { page-break-inside: avoid; break-inside: avoid; }
+</style>
+```
+
+**PDF Output Locations:**
+| Report | PDF Location |
+|--------|-------------|
+| Consolidated | `data/reports/pdf/{date}/index-{date}.pdf` |
+| Company | `data/reports/pdf/{date}/{company}-{date}.pdf` |
+| Comparison | `data/reports/pdf/{date}/compare-{A}-vs-{B}-{date}.pdf` |
+
+**Styling for PDF:**
+- ECharts rendered via Playwright with 3s wait for JS execution
+- CSS page-break properties prevent section splitting across pages
+- A4 format with 15mm margins
+- Dark-themed with printed background colors
+
+---
+
+## PNG Mode
+
+When `{{mode}}` is `png`:
+
+Export reports to PNG/JPEG image for visual sharing:
+
+1. Read optional `report` arg (default: latest consolidated report)
+   - `png` → export `data/reports/html/index.html`
+   - `png anthropic` → export specific company report
+2. Run image export script:
+   ```bash
+   node scripts/export_image.js data/reports/html/index.html
+   ```
+   The script uses Playwright to:
+   - Wait for ECharts to fully render (3 second delay)
+   - Verify ECharts instances are present
+   - Capture viewport screenshot (default 1400x900) or full page
+3. Save image to `data/reports/images/{date}/{report}-{date}.png`
+4. Output image path, file size, and format
+
+**Image Script Options (`scripts/export_image.js`):**
+```bash
+node scripts/export_image.js [html-path] [options]
+  -o, --output <path>   Output file path
+  -f, --full            Capture full page (not just viewport)
+  -j, --jpeg            Export as JPEG (default: PNG)
+```
+
+**Image Output Locations:**
+| Report | Image Location |
+|--------|---------------|
+| Consolidated | `data/reports/images/{date}/index-{date}.png` |
+| Company | `data/reports/images/{date}/{company}-{date}.png` |
+
+**Image Features:**
+- High-resolution screenshot with ECharts fully rendered
+- Dark background preserved (omitBackground: false)
+- PNG default with JPEG quality option
+- Viewport or full page capture modes
 
 ---
 
@@ -343,8 +516,10 @@ All modes have access to:
 
 ## Scoring System
 
-| Dimension | Weight |
-|-----------|--------|
+**Reference values (customizable in `modes/_profile.md` or `config/profile.yml`):**
+
+| Dimension | Default Weight |
+|-----------|---------------|
 | Product Maturity | 20% |
 | Feature Coverage | 20% |
 | Pricing | 15% |
@@ -352,7 +527,7 @@ All modes have access to:
 | Growth Trajectory | 10% |
 | Brand Strength | 10% |
 
-**Confidence Levels:**
+**Confidence Levels (customizable):**
 - 🟢 High: 3+ sources agree
 - 🟡 Medium: 2 sources agree
 - 🔴 Low: Conflicting or insufficient data
@@ -360,6 +535,8 @@ All modes have access to:
 ---
 
 ## Archetypes
+
+**Reference types (customizable in `modes/_profile.md` or `config/profile.yml`):**
 
 Classify competitors into:
 - **Direct Competitor** -- Same product, same market
@@ -373,29 +550,33 @@ Classify competitors into:
 
 ## Output Locations
 
-**规范结构：** 所有报告按日期归档到 `data/reports/{date}/` 目录，`latest/` 目录仅存 symlink。
+**Standard Structure:** All reports are organized by date in `data/reports/{date}/`, with `latest/` containing symlinks only.
 
 | Output | Location |
 |--------|----------|
-| 分析报告 | `data/reports/{date}/{company}-{date}.md` |
-| 最新报告 symlink | `data/reports/latest/{company}.md` → `../{date}/{company}-{date}.md` |
-| 对比报告 | `data/reports/{date}/compare-{A}-vs-{B}-{date}.md` |
-| 定价报告 | `data/reports/{date}/pricing-{company}-{date}.md` |
-| 综合报告 | `data/reports/{date}/consolidated-{date}.md` |
-| HTML 报告 | `data/reports/html/{company}-{date}.html` |
-| 快照 (update diff) | `data/snapshots/{company}/{date}.json` |
-| 截图 (Playwright) | `data/reports/screenshots/{company}-{date}.png` |
-
-**Snapshots用途:**
-- `update` 模式对比新旧报告的分数变化 (≥5% alert)
-- `pricing` 模式对比历史定价变化
-- 每次analyze/update后自动保存
-
-**Playwright用途:**
-- 为 `analyze` / `report` 模式生成竞品官网截图
-- 当用户需要可视化证据时调用
-- 可选功能，不影响核心分析流程
+| Analysis Report | `data/reports/{date}/{company}-{date}.md` |
+| Latest Symlink | `data/reports/latest/{company}.md` → `../{date}/{company}-{date}.md` |
+| Comparison Report | `data/reports/{date}/compare-{A}-vs-{B}-{date}.md` |
+| Pricing Report | `data/reports/{date}/pricing-{company}-{date}.md` |
+| Consolidated Report | `data/reports/{date}/consolidated-{date}.md` |
+| HTML Report | `data/reports/html/{company}-{date}.html` |
+| PDF Report | `data/reports/pdf/{date}/{company}-{date}.pdf` |
+| Image (PNG) | `data/reports/images/{date}/{company}-{date}.png` |
+| Snapshot (update diff) | `data/snapshots/{company}/{date}.json` |
+| Pricing Snapshot | `data/snapshots/pricing/{company}.json` |
+| Monitor Schedule | `data/.monitor-schedule.json` |
+| Screenshot (Playwright) | `data/reports/screenshots/{company}-{date}.png` |
 | Competitor Tracker | `data/competitors.md` |
+
+**Snapshot Usage:**
+- `update` mode compares old vs new report scores (default ≥5% triggers alert, customizable)
+- `pricing` mode compares historical pricing changes
+- Auto-saved after each analyze/update
+
+**Playwright Usage:**
+- Generates competitor website screenshots for `analyze` / `report` mode
+- Used when visual evidence is needed
+- Optional feature, does not affect core analysis flow
 
 **Note:** Reports are never overwritten — each run creates a new dated file. Use `update` mode for incremental change tracking.
 
