@@ -182,18 +182,23 @@ competitive-ops-v2/
 │   └── industry-profiles.yml      # 行业配置（AI/SaaS/FinTech）
 ├── .claude/skills/competitive-ops/ # Skill 定义
 │   ├── SKILL.md                   # 路由 + 各模式定义
-│   └── modes/
-│       └── batch.md               # 批处理模式实现
+│   └── modes/                    # 模式实现
 ├── scripts/                        # Python 工具
 │   └── pricing_analyzer.py        # 价值评分 + 变化检测
 ├── templates/
 │   └── report/
-│       └── markdown/              # Markdown 模板
+│       └── markdown/              # 报告模板
 │           ├── swot-template-ai.md
 │           ├── swot-template-saas.md
-│           └── swot-template-fintech.md
+│           ├── swot-template-fintech.md
+│           └── pricing-deep-dive-template.md
 ├── modes/
-│   └── _industry-context.md      # 行业特定 SWOT 问题
+│   ├── _industry-context.md      # 行业特定 SWOT 问题
+│   ├── _shared.md                # 共享规则和评分
+│   ├── _profile.md              # 用户自定义
+│   ├── add.md, analyze.md, batch.md, compare.md
+│   ├── pricing.md, pricing-deep-dive.md, report.md
+│   ├── track.md, update.md, monitor.md, pdf.md, png.md
 ├── data/
 │   ├── competitors.md              # 竞品追踪表
 │   ├── batch-queue.md             # 批处理队列
@@ -202,22 +207,10 @@ competitive-ops-v2/
 │   │   └── {company}.json
 │   ├── reports/
 │   │   ├── {date}/              # 按日期归档
-│   │   │   ├── {company}-{date}.md
-│   │   │   ├── pricing-deep-dive-{company}-{date}.md
-│   │   │   └── consolidated-{date}.md
-│   │   ├── latest/               # 最新报告 symlink
-│   │   │   └── {company}.md → ../{date}/{company}-{date}.md
-│   │   ├── html/                 # HTML 报告（ECharts 交互图表）
-│   │   │   ├── {company}-{date}.html
-│   │   │   └── index.html        # 综合 HTML 报告
-│   │   └── pdf/                  # PDF 导出
-│   │       └── {date}/
-│   │           └── {report}-{date}.pdf
-│   └── snapshots/                 # 历史数据（用于 diff 追踪）
-│       ├── {company}/
-│       │   └── {date}.json
-│       └── pricing/              # 定价变化快照
-│           └── {company}.json
+│   │   └── latest/               # 最新报告 symlink
+│   └── snapshots/                 # 历史快照
+└── exports/                        # PNG/PDF 导出
+    └── index-{date}.png
 ```
 
 ---
