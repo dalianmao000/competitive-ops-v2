@@ -175,7 +175,7 @@ When `{{mode}}` is `analyze`:
 7. **If `html` flag is present in args:**
    - Read the markdown report
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
-   - Generate Chinese HTML with Tailwind dark theme
+   - Generate HTML report with Tailwind dark theme
    - Save to `data/reports/html/{company}-{date}.html`
 8. Update `data/competitors.md` with new score and date
 9. Output summary with score and confidence
@@ -197,7 +197,7 @@ When `{{mode}}` is `compare`:
 6. **If `html` flag is present:**
    - Read the comparison markdown
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
-   - Generate Chinese HTML with Tailwind dark theme
+   - Generate HTML report with Tailwind dark theme
    - Save to `data/reports/html/compare-{A}-vs-{B}-{date}.html`
 7. Output path to comparison report
 
@@ -240,7 +240,7 @@ When `{{mode}}` is `pricing`:
 7. **If `html` flag is present:**
    - Read the pricing report markdown
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
-   - Generate Chinese HTML with Tailwind dark theme
+   - Generate HTML report with Tailwind dark theme
    - Save to `data/reports/html/pricing-{company}-{date}.html`
 8. Output pricing table
 
@@ -308,7 +308,7 @@ When `{{mode}}` is `report`:
 4. **If `html` flag is present in args:**
    - Read the consolidated markdown report
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
-   - Generate Chinese HTML with Tailwind dark theme
+   - Generate HTML report with Tailwind dark theme
    - Save to `data/reports/html/index.html`
 5. Output path to report (include HTML path if generated)
 
