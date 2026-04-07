@@ -216,17 +216,6 @@ Professional, responsive HTML reports with Tailwind dark theme:
 
 ---
 
-## Design System
-
-Reports use the **ui-ux-pro-max** design system for professional styling:
-
-- **67 UI Styles** — Minimalism, Swiss Style, Glassmorphism, etc.
-- **161 Color Palettes** — Industry-specific palettes
-- **57 Font Pairings** — Google Fonts combinations
-- **25 Chart Types** — Data visualization recommendations
-
----
-
 ## Data Privacy
 
 - **Local-first**: All data stored in your project directory
