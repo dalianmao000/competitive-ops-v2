@@ -1,135 +1,99 @@
 #!/usr/bin/env python3
-"""
-Change Detection Module
+"""Change detector for monitoring competitor changes."""
 
-Detects changes in data (e.g., pricing) against configurable thresholds.
-"""
+from dataclasses import dataclass
+from typing import Any, Dict, Optional
 
-import yaml
-from pathlib import Path
-from typing import Any, Optional
+
+@dataclass
+class ChangeResult:
+    changed: bool
+    change_type: str  # "added", "removed", "modified", "unchanged"
+    old_value: Any
+    new_value: Any
+    change_percent: float
 
 
 class ChangeDetector:
-    """Detects changes in data based on configured thresholds."""
+    """Detect changes between snapshots."""
 
-    def __init__(self, config_path: str):
-        """
-        Initialize change detector with configuration.
+    def __init__(self, threshold: float = 0.05):
+        self.threshold = threshold  # 5% change threshold
 
-        Args:
-            config_path: Path to YAML configuration file.
-
-        Raises:
-            FileNotFoundError: If config file doesn't exist.
-            yaml.YAMLError: If config file is invalid YAML.
-        """
-        self.config_path = Path(config_path)
-        if not self.config_path.exists():
-            raise FileNotFoundError(f"Config file not found: {config_path}")
-
-        with open(self.config_path) as f:
-            self.config = yaml.safe_load(f)
-
-    def detect_pricing_change(
-        self,
-        old: dict[str, Any],
-        new: dict[str, Any],
-        product_key: str = "price"
-    ) -> bool:
-        """
-        Detect if pricing changed beyond configured threshold.
+    def detect_change(self, old: Any, new: Any) -> ChangeResult:
+        """Detect if old and new values have significant difference.
 
         Args:
-            old: Dict containing old pricing data.
-            new: Dict containing new pricing data.
-            product_key: Key to access pricing value in dicts.
+            old: Previous value (dict, list, str, or number)
+            new: New value
 
         Returns:
-            True if change exceeds threshold, False otherwise.
+            ChangeResult with change details
         """
-        thresholds = self.config.get("thresholds", {}).get("pricing", {})
-        absolute_threshold = thresholds.get("absolute", 0)
-        percentage_threshold = thresholds.get("percentage", 0)
+        if type(old) != type(new):
+            return ChangeResult(
+                changed=True,
+                change_type="modified",
+                old_value=old,
+                new_value=new,
+                change_percent=100.0
+            )
 
-        old_price = old.get(product_key, 0)
-        new_price = new.get(product_key, 0)
+        if isinstance(old, dict):
+            return self._detect_dict_change(old, new)
+        elif isinstance(old, list):
+            return self._detect_list_change(old, new)
+        else:
+            return self._detect_scalar_change(old, new)
 
-        if old_price == 0:
-            return new_price != 0
+    def _detect_dict_change(self, old: dict, new: dict) -> ChangeResult:
+        all_keys = set(old.keys()) | set(new.keys())
+        changes = 0
 
-        absolute_change = abs(new_price - old_price)
-        percentage_change = abs((new_price - old_price) / old_price) * 100
+        for key in all_keys:
+            if key not in old:
+                changes += 1
+            elif key not in new:
+                changes += 1
+            elif old[key] != new[key]:
+                changes += 1
 
-        return (
-            absolute_change >= absolute_threshold or
-            percentage_change >= percentage_threshold
+        change_percent = changes / len(all_keys) if all_keys else 0
+
+        return ChangeResult(
+            changed=change_percent >= self.threshold,
+            change_type="modified",
+            old_value=old,
+            new_value=new,
+            change_percent=change_percent * 100
         )
 
-    def detect_change(
-        self,
-        old: Any,
-        new: Any,
-        field: str,
-        data_type: str = "numeric"
-    ) -> bool:
-        """
-        Generic change detection for any field.
+    def _detect_list_change(self, old: list, new: list) -> ChangeResult:
+        added = len(set(new) - set(old))
+        removed = len(set(old) - set(new))
+        change_percent = (added + removed) / max(len(old), len(new), 1)
 
-        Args:
-            old: Old data dict.
-            new: New data dict.
-            field: Field name to check for changes.
-            data_type: Type of data ("numeric", "text", "list").
+        return ChangeResult(
+            changed=change_percent >= self.threshold,
+            change_type="modified",
+            old_value=old,
+            new_value=new,
+            change_percent=change_percent * 100
+        )
 
-        Returns:
-            True if change detected beyond threshold, False otherwise.
-        """
-        if data_type == "numeric":
-            old_val = old.get(field, 0)
-            new_val = new.get(field, 0)
-            threshold_key = f"{field}_threshold"
-            threshold = self.config.get("thresholds", {}).get(threshold_key, 0)
+    def _detect_scalar_change(self, old: Any, new: Any) -> ChangeResult:
+        if isinstance(old, (int, float)) and isinstance(new, (int, float)):
+            if old == 0:
+                change_percent = abs(new) * 100 if new != 0 else 0
+            else:
+                change_percent = abs((new - old) / old) * 100
+        else:
+            change_percent = 0 if old == new else 100
 
-            if old_val == 0:
-                return new_val != 0
-            return abs(new_val - old_val) >= threshold
-
-        elif data_type == "text":
-            return old.get(field) != new.get(field)
-
-        elif data_type == "list":
-            old_list = set(old.get(field, []))
-            new_list = set(new.get(field, []))
-            return old_list != new_list
-
-        return False
-
-
-if __name__ == "__main__":
-    import tempfile
-    import os
-
-    config = {
-        "thresholds": {
-            "pricing": {
-                "absolute": 10.0,
-                "percentage": 5.0
-            }
-        }
-    }
-
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
-        yaml.dump(config, f)
-        config_path = f.name
-
-    try:
-        detector = ChangeDetector(config_path)
-
-        old_pricing = {"price": 100.0}
-        new_pricing = {"price": 115.0}
-
-        changed = detector.detect_pricing_change(old_pricing, new_pricing)
-        print(f"Pricing change detected: {changed}")
-    finally:
-        os.unlink(config_path)
+        return ChangeResult(
+            changed=change_percent >= (self.threshold * 100),
+            change_type="modified" if old != new else "unchanged",
+            old_value=old,
+            new_value=new,
+            change_percent=change_percent
+        )

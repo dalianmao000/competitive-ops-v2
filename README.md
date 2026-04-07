@@ -34,18 +34,17 @@ Competitive-Ops turns Claude Code into a **competitive intelligence command cent
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_ORG/competitive-ops-v2.git
+git clone https://github.com/YOUR_ORG/competitive-opsetitive-ops-v2.git
 cd competitive-ops-v2
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
-npx playwright install chromium  # For screenshot feature
 
 # Configure (copy and edit)
 cp config/profile.yml config/profile.yml  # Your company info
 ```
 
-### 2. Configure API Keys
+### 2. Configure API Keys (Optional)
 
 ```bash
 # Add to your environment or .env file
@@ -53,6 +52,7 @@ export TAVILY_API_KEY="tvly-xxxxx"
 ```
 
 Get a Tavily API key at [tavily.com](https://tavily.com).
+Or use Tavily MCP server if configured in Claude Code.
 
 ### 3. Use in Claude Code
 
@@ -60,19 +60,19 @@ Get a Tavily API key at [tavily.com](https://tavily.com).
 claude
 
 # Add a competitor
-/comp add Anthropic
+/competitive-ops add Anthropic
 
 # Full analysis with HTML report
-/comp analyze Anthropic
+/competitive-ops analyze Anthropic
 
 # Compare two competitors
-/comp compare Anthropic vs OpenAI
+/competitive-ops compare Anthropic vs OpenAI
 
 # Check pricing changes
-/comp pricing Anthropic
+/competitive-ops pricing Anthropic
 
 # View all tracked competitors
-/comp track
+/competitive-ops track
 ```
 
 ---
@@ -83,14 +83,14 @@ claude
 
 | Command | Description |
 |---------|-------------|
-| `/comp add <company>` | Add a competitor to tracking |
-| `/comp analyze <company>` | Full analysis: SWOT + scoring + HTML report |
-| `/comp compare <A> vs <B>` | Side-by-side feature matrix |
-| `/comp update <company>` | Check for changes since last analysis |
-| `/comp pricing <company>` | Pricing research with change detection |
-| `/comp batch` | Batch process multiple competitors |
-| `/comp report` | Generate consolidated report |
-| `/comp track` | View tracking dashboard |
+| `/competitive-ops add <company>` | Add a competitor to tracking |
+| `/competitive-ops analyze <company>` | Full analysis: SWOT + scoring + HTML report |
+| `/competitive-ops compare <A> vs <B>` | Side-by-side feature matrix |
+| `/competitive-ops update <company>` | Check for changes since last analysis |
+| `/competitive-ops pricing <company>` | Pricing research with change detection |
+| `/competitive-ops batch` | Batch process multiple competitors |
+| `/competitive-ops report` | Generate consolidated report |
+| `/competitive-ops track` | View tracking dashboard |
 
 ### Scoring System
 
@@ -144,12 +144,8 @@ competitive-ops-v2/
 │   ├── _profile.md            # User customization
 │   └── *.md                   # Individual modes
 ├── scripts/                    # Python utilities
-│   ├── tavily-search.py       # Tavily API
-│   ├── cross-validate.py      # Multi-source validation
-│   ├── screenshot.py          # Playwright screenshots
-│   ├── change-detector.py     # Change tracking
-│   ├── html-generator.py      # HTML reports
-│   └── generate-pdf.py        # PDF export
+│   ├── cross_validate.py      # Multi-source validation
+│   └── change_detector.py      # Change tracking
 ├── templates/
 │   └── report/
 │       └── html/              # HTML templates

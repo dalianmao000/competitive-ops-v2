@@ -1,26 +1,31 @@
 # Competitive-Ops Profile Configuration
+# Copy this file to config/profile.yml and fill in your details.
+# This is the single source of truth for your competitive analysis.
 
 company:
-  name: "Competitive-Ops"
-  website: "https://github.com/anthropics/claude-code"
-  product: "Competitive-Ops v2"
-  target_market: "Mid-Market, Enterprise SaaS"
+  name: "" # TODO: Your company name
+  website: "" # TODO: Your company website
+  product: "" # TODO: Your product name
+  target_market: "" # TODO: SMB, Mid-Market, Enterprise
 
 analysis:
   # Competitor archetypes
   archetypes:
     - Direct Competitor
     - Indirect Competitor
-    - Emerging Threat
-    - Replacement Threat
   # How often to scan for changes
-  scan_frequency: weekly
+  scan_frequency: daily
 
 outputs:
   formats:
     - markdown
     - html
+    - pdf
   design_system: enterprise
 
 # Competitor tracking
-competitors: []
+competitors:
+  # Add your competitors here
+  - name: "" # TODO: Competitor name
+    tier: "" # TODO: Direct, Indirect
+    website: "" # TODO: Competitor website

@@ -15,12 +15,12 @@ Determine the mode from `{{mode}}`:
 |-------|------|
 | (empty / no args) | `discovery` -- Show command menu |
 | `add <company>` | `add` -- Add competitor to tracking |
-| `analyze <company>` | `analyze` -- Full analysis with SWOT + report |
-| `compare <A> vs <B>` | `compare` -- Side-by-side comparison |
+| `analyze <company> [html]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output) |
+| `compare <A> vs <B> [html]` | `compare` -- Side-by-side comparison (add `html` for HTML output) |
 | `update <company>` | `update` -- Check for changes |
-| `pricing <company>` | `pricing` -- Pricing research |
+| `pricing <company> [html]` | `pricing` -- Pricing research (add `html` for HTML output) |
 | `batch` | `batch` -- Batch processing |
-| `report` | `report` -- Generate consolidated report |
+| `report [html]` | `report` -- Generate consolidated report (add `html` for HTML output) |
 | `track` | `track` -- View tracking dashboard |
 
 ---
@@ -49,16 +49,67 @@ First time? Say "setup" to configure your company info.
 
 ## Setup Mode
 
-If `{{mode}}` is "setup", check if the system is configured:
+If `{{mode}}` is "setup":
 
-1. Check if `cv.md` exists with company info
-2. Check if `config/profile.yml` exists
-3. Check if `data/competitors.md` exists
+### Step 1: Install Dependencies
 
-If any are missing, guide the user through setup:
-- Copy `cv.md.template` to `cv.md` and fill in company info
-- Copy `config/profile.yml.example` to `config/profile.yml`
-- Create `data/competitors.md` from template
+Check for required tools and install if missing:
+
+1. **Playwright** for screenshots (强制安装):
+   - Run: `npx playwright install chromium` (无条件执行，确保Chromium可用)
+   - Verify: `npx playwright --version`
+
+2. **ui-ux-pro-max** for HTML reports:
+   - Install: `npx -y uipro-cli init --ai claude` (in项目目录)
+   - Skill 位置: `{project}/.claude/skills/ui-ux-pro-max/`
+   - 调用方式: `/skill ui-ux-pro-max`
+
+3. **Tavily MCP** (optional, for fallback search):
+   - Correct package name: `tavily-mcp` (NOT `@tavily/tavily-mcp`)
+   - Add with: `claude mcp add tavily -- npx -y tavily-mcp`
+   - Set API key: `TAVILY_API_KEY=your_key`
+
+4. **Python dependencies** (强制安装，优先使用虚拟环境):
+   ```bash
+   python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+   ```
+   - 或直接安装: `pip install -r requirements.txt` (in项目目录)
+
+### Step 2: Configure System
+
+Check if the system is configured:
+
+1. **Required:** Check if `data/competitors.md` exists
+   - If missing, create from template or empty file with headers:
+     ```
+     # Competitors Tracker
+     | # | Company | Tier | Score | Status | Last Updated | Notes |
+     |---|---------|------|-------|--------|--------------|-------|
+     ```
+2. **Optional:** `cv.md` and `config/profile.yml`
+   - These define your own product for scoring context
+   - Not required for basic competitive analysis
+   - If missing, skip and proceed with analysis
+
+### Step 3: Summary
+
+Output setup status:
+```
+✅ competitive-ops v2 ready!
+
+Installed:
+  ✅ Playwright (screenshots)
+  ✅ ui-ux-pro-max (HTML reports: npx -y uipro-cli init --ai claude)
+  ✅ Tavily MCP (fallback search)
+  ✅ Python dependencies
+
+Required:
+  ✅ data/competitors.md
+
+Optional (for scoring context):
+  [?] cv.md (your product)
+  [?] config/profile.yml
+```
 
 ---
 
@@ -68,9 +119,33 @@ When `{{mode}}` is `add`:
 
 1. Read `{{company}}` from args
 2. Check if competitor already exists in `data/competitors.md`
-3. If new, add entry with tier assignment (Tier 1/2/3)
-4. Create initial research structure
-5. Output confirmation with tier and initial score placeholder
+   - **If exists:** Output warning: "⚠️ {company} already in tracker (score: X)" and skip
+   - **If new:** Add entry with tier assignment (Tier 1/2/3)
+3. Create initial research structure (snapshot folder)
+4. Output confirmation with tier and initial score placeholder
+
+---
+
+## Search Fallback Order
+
+When researching competitors, use this search order:
+
+1. **web-search** → Primary search tool
+2. **web-fetch** → Fetch specific URLs for detailed info
+3. **Tavily MCP server** → Fallback when native tools unavailable
+
+**Tavily MCP Usage:**
+```
+Use Tavily MCP server for competitive intelligence search:
+- tavily-search for company overview, products, pricing
+- tavily-search with topic="business" for business intelligence
+- tavily-search with topic="news" for recent news
+```
+
+**Fallback Detection:**
+- If `web-search` returns no results or error → try `web-fetch`
+- If `web-fetch` fails or unavailable → invoke Tavily MCP server
+- Always log which search method was used in the report metadata
 
 ---
 
@@ -78,17 +153,30 @@ When `{{mode}}` is `add`:
 
 When `{{mode}}` is `analyze`:
 
-1. Read `{{company}}` from args
-2. Run research:
-   - Tavily search for company info
-   - Web search for news and reviews
+1. Read `{{company}}` and optional `{{html}}` flag from args
+2. Check if competitor exists in `data/competitors.md`
+   - **If new:** Add to `data/competitors.md` first
+   - **If exists:** Note: "ℹ️ New analysis for {company}"
+3. Run research (following fallback order above):
+   - Try web-search first for company info
+   - Try web-fetch for specific URLs
+   - Fallback to Tavily MCP server if needed
    - Cross-validate from multiple sources
-3. Generate SWOT analysis
-4. Score across 6 dimensions
-5. Generate report in `data/reports/{company}-{date}.md`
-6. Generate HTML report (if configured)
-7. Update `data/competitors.md`
-8. Output summary with score and confidence
+4. Generate SWOT analysis
+5. Score across 6 dimensions
+6. Generate report in `data/reports/{company}-{date}.md`
+   - **Always creates new file (never overwrites)**
+   - Latest report per company should also be symlinked/copied to `data/reports/latest/{company}.md` for easy access
+7. **If `html` flag is present in args:**
+   - Read the markdown report
+   - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
+   - Generate Chinese HTML with Tailwind dark theme
+   - Save to `data/reports/html/{company}-{date}.html`
+8. Update `data/competitors.md` with new score and date
+9. Output summary with score and confidence
+   - Include path to HTML report if generated
+
+**Note:** For incremental change tracking, use `update` mode instead. `analyze` always creates fresh analysis.
 
 ---
 
@@ -96,11 +184,17 @@ When `{{mode}}` is `analyze`:
 
 When `{{mode}}` is `compare`:
 
-1. Parse `A vs B` from args
-2. Load both companies' latest reports
+1. Parse `A vs B` and optional `{{html}}` flag from args
+2. Load both companies' latest reports from `data/reports/latest/`
 3. Generate feature matrix comparison
 4. Score delta analysis
-5. Output side-by-side comparison
+5. Save comparison to `data/reports/compare-{A}-vs-{B}-{date}.md`
+6. **If `html` flag is present:**
+   - Read the comparison markdown
+   - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
+   - Generate Chinese HTML with Tailwind dark theme
+   - Save to `data/reports/html/compare-{A}-vs-{B}-{date}.html`
+7. Output path to comparison report
 
 ---
 
@@ -109,11 +203,18 @@ When `{{mode}}` is `compare`:
 When `{{mode}}` is `update`:
 
 1. Read `{{company}}` from args
-2. Re-run Tavily search to detect changes
-3. Compare to last snapshot in `data/snapshots/`
-4. If significant change detected (threshold: 5%), alert user
-5. Update report and snapshot
-6. Output changelog
+2. Re-run research (following Search Fallback Order):
+   - Try web-search/web-fetch first
+   - Fallback to Tavily MCP if unavailable
+3. Load the previous report from `data/reports/{company}-{prev-date}.md` as baseline
+4. Generate new analysis: SWOT + scores → new `data/reports/{company}-{date}.md`
+5. **Diff analysis:** Compare old vs new report, compute score delta per dimension
+6. **If score change ≥ 5% on any dimension → alert user with 🔴 flag**
+7. Save snapshot to `data/snapshots/{company}/{date}.json`
+8. Output:
+   - New report path
+   - Score delta table (before → after per dimension)
+   - Changelog: what changed (new features, pricing changes, etc.)
 
 ---
 
@@ -121,15 +222,22 @@ When `{{mode}}` is `update`:
 
 When `{{mode}}` is `pricing`:
 
-1. Read `{{company}}` from args
-2. Research pricing from:
-   - Company website
+1. Read `{{company}}` and optional `{{html}}` flag from args
+2. Research pricing from (following fallback order):
+   - Company website (try web-fetch first)
    - G2, Capterra, Glassdoor
    - News articles
-3. Compare to last pricing snapshot
-4. If change detected, alert user
+   - Tavily MCP server as fallback for business intelligence
+3. Compare to `data/snapshots/pricing/{company}.json`
+4. If change detected, alert user with change details
 5. Update `data/snapshots/pricing/{company}.json`
-6. Output pricing table
+6. Save pricing report to `data/reports/pricing-{company}-{date}.md`
+7. **If `html` flag is present:**
+   - Read the pricing report markdown
+   - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
+   - Generate Chinese HTML with Tailwind dark theme
+   - Save to `data/reports/html/pricing-{company}-{date}.html`
+8. Output pricing table
 
 ---
 
@@ -181,11 +289,15 @@ Mistral,2,medium
 
 When `{{mode}}` is `report`:
 
-1. Check for filters in args (company, date range)
+1. Check for optional `html` flag and filters in args (company, date range)
 2. Aggregate all reports in `data/reports/`
-3. Generate consolidated report
-4. Generate HTML (if configured)
-5. Output path to report
+3. Generate consolidated report in `data/reports/consolidated-{date}.md`
+4. **If `html` flag is present in args:**
+   - Read the consolidated markdown report
+   - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
+   - Generate Chinese HTML with Tailwind dark theme
+   - Save to `data/reports/html/index.html`
+5. Output path to report (include HTML path if generated)
 
 ---
 
@@ -249,10 +361,24 @@ Classify competitors into:
 
 | Output | Location |
 |--------|----------|
-| Reports | `data/reports/{company}-{date}.md` |
+| Reports (all runs preserved) | `data/reports/{company}-{date}.md` |
+| Latest report per company | `data/reports/latest/{company}.md` |
 | HTML Reports | `data/reports/html/{company}-{date}.html` |
-| Snapshots | `data/snapshots/{company}/{type}-{date}.json` |
+| Snapshots (for update diff) | `data/snapshots/{company}/{date}.json` |
+| Screenshots (Playwright) | `data/reports/screenshots/{company}-{date}.png` |
+
+**Snapshots用途:**
+- `update` 模式对比新旧报告的分数变化 (≥5% alert)
+- `pricing` 模式对比历史定价变化
+- 每次analyze/update后自动保存
+
+**Playwright用途:**
+- 为 `analyze` / `report` 模式生成竞品官网截图
+- 当用户需要可视化证据时调用
+- 可选功能，不影响核心分析流程
 | Competitor Tracker | `data/competitors.md` |
+
+**Note:** Reports are never overwritten — each run creates a new dated file. Use `update` mode for incremental change tracking.
 
 ---
 

@@ -45,7 +45,7 @@ AI-powered competitive intelligence built on Claude Code: competitor tracking, p
 | `data/snapshots/` | Historical snapshots |
 | `config/profile.yml` | Company/product configuration |
 | `config/sources.yml` | Trusted data sources |
-| `templates/report/` | Report templates |
+| `scripts/` | Python utilities (cross_validate, change_detector) |
 
 ### First Run -- Onboarding (IMPORTANT)
 
@@ -81,7 +81,7 @@ If any are missing, enter onboarding mode and guide the user through setup.
 
 ## Stack and Conventions
 
-- Node.js (mjs modules), YAML (config), Markdown (data)
-- Scripts in `.mjs`, configuration in YAML
-- Output in `reports/`, Snapshots in `snapshots/`
+- Skill-based pipeline (Claude Code skills)
+- Python utilities for validation/detection (`scripts/*.py`)
+- YAML (config), Markdown (data)
 - Report naming: `{competitor}-{date}.md`

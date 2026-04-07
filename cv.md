@@ -1,29 +1,30 @@
-# Product Definition
+# Product Definition Template
+
+<!-- TODO: Replace with your product/company information -->
 
 ## Company/Product Overview
 
-**Company Name:** Competitive-Ops
-**Product Name:** Competitive-Ops v2
-**Website:** https://github.com/anthropics/claude-code
-**Founded:** 2024
-**Headquarters:** San Francisco, CA
+**Company Name:** <!-- TODO: Company name -->
+**Product Name:** <!-- TODO: Product name -->
+**Website:** <!-- TODO: Website URL -->
+**Founded:** <!-- TODO: Year founded -->
+**Headquarters:** <!-- TODO: Location -->
 
-**Description:** AI-powered competitive intelligence pipeline built on Claude Code. Automates competitor tracking, pricing monitoring, feature detection, and report generation for market analysis teams.
+**Description:** <!-- TODO: 2-3 sentence description of what the company/product does -->
 
 ---
 
 ## Target Market
 
 **Ideal Customer Profile:**
-- Company size: Mid-Market, Enterprise
-- Industry: SaaS, Tech, Marketing Agencies
-- Geography: Global (English-speaking markets)
-- Use case: Competitive intelligence, market research, strategic planning
+- Company size: <!-- TODO: e.g., SMB, Mid-Market, Enterprise -->
+- Industry: <!-- TODO: e.g., SaaS, E-commerce, Healthcare -->
+- Geography: <!-- TODO: e.g., North America, Global -->
+- Use case: <!-- TODO: Primary use case -->
 
 **Key Buyer Personas:**
-- Competitive Intelligence Manager
-- Product Marketing Director
-- VP of Strategy
+- <!-- TODO: Persona 1 -->
+- <!-- TODO: Persona 2 -->
 
 ---
 
@@ -31,61 +32,54 @@
 
 | Feature | Description | Differentiation |
 |---------|-------------|-----------------|
-| AI-Powered Research | Automated competitor analysis using Claude Code agents | No manual research needed; AI synthesizes data from multiple sources |
-| SWOT Analysis | Structured strengths/weaknesses/opportunities/threats | AI-generated with confidence scoring |
-| Pricing Monitoring | Track competitor pricing changes over time | Automated alerts when pricing changes detected |
-| Batch Processing | Analyze multiple competitors in parallel | Max 5 concurrent, efficient for portfolio tracking |
-| Multi-Format Reports | Markdown, HTML, PDF output options | Flexible delivery to different stakeholders |
-| Tier Classification | Tier 1/2/3 competitor categorization | Focus resources on highest-impact analysis |
+| <!-- TODO: Feature 1 --> | <!-- TODO: Description --> | <!-- TODO: Why it matters --> |
+| <!-- TODO: Feature 2 --> | <!-- TODO: Description --> | <!-- TODO: Why it matters --> |
+| <!-- TODO: Feature 3 --> | <!-- TODO: Description --> | <!-- TODO: Why it matters --> |
 
 ---
 
 ## Pricing Model
 
 **Pricing Structure:**
-- Free tier (self-hosted on Claude Code)
-- Claude Code subscription required
+- <!-- TODO: Free tier, Starter, Pro, Enterprise -->
+- <!-- TODO: Per-seat, per-usage, flat rate -->
 
-**Starting Price:** Included with Claude Code subscription
+**Starting Price:** <!-- TODO: $X/month -->
 
-**Enterprise Pricing:** Claude Code Team/Enterprise plans
+**Enterprise Pricing:** <!-- TODO: Custom, $Y+ -->
 
 **Key Pricing Factors:**
-- Team seat count
-- API usage for web research
+- <!-- TODO: Seat count, usage, features -->
 
 ---
 
 ## Competitive Advantages
 
 ### Strengths
-- Fully automated competitive analysis workflow
-- Built on Claude Code's reasoning capabilities
-- Customizable archetypes and scoring system
+- <!-- TODO: Advantage 1 -->
+- <!-- TODO: Advantage 2 -->
 
 ### Weaknesses
-- Requires Claude Code (not standalone)
-- English-centric data sources
-- No real-time alerting (manual triggers)
+- <!-- TODO: Weakness 1 -->
+- <!-- TODO: Weakness 2 -->
 
 ### Market Position
-Positioned as the "intelligent backbone" for competitive intelligence teams, competing with manual research processes and expensive enterprise CI tools.
+<!-- TODO: How they position themselves vs competitors -->
 
 ---
 
 ## Proof Points
 
 **Key Metrics:**
-- Active users: Growing with Claude Code adoption
-- Report generation: Automated SWOT + scoring
+- <!-- TODO: Customers, ARR, Growth rate -->
 
 **Notable Customers:**
-- Internal Anthropic competitive intelligence team
-- Early adopter companies using Claude Code
+- <!-- TODO: Customer 1 -->
+- <!-- TODO: Customer 2 -->
 
 **Awards/Recognition:**
-- Built as part of Claude Code ecosystem
+- <!-- TODO: Any industry awards or recognition -->
 
 ---
 
-*Last Updated: 2026-04-07*
+*Last Updated: YYYY-MM-DD*

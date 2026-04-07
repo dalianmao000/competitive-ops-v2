@@ -1,106 +1,62 @@
 #!/usr/bin/env python3
-"""
-Multi-Source Validation Module
+"""Cross-validation module for multi-source data verification."""
 
-Validates data across multiple sources and computes confidence scores.
-"""
-
-from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from dataclasses import dataclass
+from typing import List
 
 
 class ConfidenceLevel(Enum):
-    """Confidence level based on source agreement."""
-    HIGH = "high"      # 3+ sources agree
-    MEDIUM = "medium"  # 2 sources agree
-    LOW = "low"       # conflicting or insufficient
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
 
 
 @dataclass
 class ValidationResult:
-    """Result of cross-source validation."""
     score: float
     confidence: ConfidenceLevel
-    warnings: list[str] = field(default_factory=list)
-    sources_used: list[str] = field(default_factory=list)
-
-    def add_warning(self, warning: str) -> None:
-        """Add a warning message to the result."""
-        self.warnings.append(warning)
-
-    def add_source(self, source: str) -> None:
-        """Add a source to the list of sources used."""
-        self.sources_used.append(source)
+    warnings: List[str]
+    sources_used: List[str]
 
 
-class CrossValidator:
-    """Validates data against multiple sources."""
+def cross_validate(sources: List[dict]) -> ValidationResult:
+    """Cross-validate data from multiple sources.
 
-    def __init__(self, min_confidence_threshold: float = 0.5):
-        """
-        Initialize validator.
+    Args:
+        sources: List of dicts with 'source', 'data', 'score' keys
 
-        Args:
-            min_confidence_threshold: Minimum score threshold for validation.
-        """
-        self.min_confidence_threshold = min_confidence_threshold
-
-    def validate(self, data_points: dict[str, Any]) -> ValidationResult:
-        """
-        Validate data across multiple sources.
-
-        Args:
-            data_points: Dict mapping source names to their data values.
-
-        Returns:
-            ValidationResult with score, confidence, warnings, and sources.
-        """
-        warnings = []
-        sources = list(data_points.keys())
-
-        if len(sources) < 2:
-            warnings.append("Insufficient sources for validation")
-            return ValidationResult(
-                score=0.0,
-                confidence=ConfidenceLevel.LOW,
-                warnings=warnings,
-                sources_used=sources
-            )
-
-        values = list(data_points.values())
-        unique_values = set(values)
-        agreement_count = len(values) - len(unique_values) + 1
-
-        if agreement_count >= 3:
-            confidence = ConfidenceLevel.HIGH
-        elif agreement_count == 2:
-            confidence = ConfidenceLevel.MEDIUM
-        else:
-            confidence = ConfidenceLevel.LOW
-            warnings.append("Sources have conflicting values")
-
-        score = agreement_count / len(sources)
-
+    Returns:
+        ValidationResult with consensus score and confidence level
+    """
+    if not sources:
         return ValidationResult(
-            score=score,
-            confidence=confidence,
-            warnings=warnings,
-            sources_used=sources
+            score=0.0,
+            confidence=ConfidenceLevel.LOW,
+            warnings=["No sources provided"],
+            sources_used=[]
         )
 
+    scores = [s.get("score", 0.5) for s in sources]
+    avg_score = sum(scores) / len(scores)
 
-if __name__ == "__main__":
-    validator = CrossValidator()
+    # Check variance - low variance = high confidence
+    variance = sum((s - avg_score) ** 2 for s in scores) / len(scores)
 
-    sample_data = {
-        "source1": "value_a",
-        "source2": "value_a",
-        "source3": "value_a"
-    }
+    if len(sources) >= 3 and variance < 0.05:
+        confidence = ConfidenceLevel.HIGH
+    elif len(sources) >= 2 and variance < 0.1:
+        confidence = ConfidenceLevel.MEDIUM
+    else:
+        confidence = ConfidenceLevel.LOW
 
-    result = validator.validate(sample_data)
-    print(f"Score: {result.score}")
-    print(f"Confidence: {result.confidence.value}")
-    print(f"Sources: {result.sources_used}")
-    print(f"Warnings: {result.warnings}")
+    warnings = []
+    if variance >= 0.1:
+        warnings.append("High variance between sources")
+
+    return ValidationResult(
+        score=avg_score,
+        confidence=confidence,
+        warnings=warnings,
+        sources_used=[s.get("source", "unknown") for s in sources]
+    )
