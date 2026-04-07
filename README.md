@@ -45,7 +45,7 @@ Instead of manual research, you get an AI-powered pipeline:
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_ORG/competitive-opsetitive-ops-v2.git
+git clone https://github.com/YOUR_ORG/competitive-ops-v2.git
 cd competitive-ops-v2
 
 # Install Python dependencies
@@ -183,38 +183,35 @@ competitive-ops-v2/
 │   └── industry-profiles.yml      # Industry configurations (AI/SaaS/FinTech)
 ├── .claude/skills/competitive-ops/ # Skill definitions
 │   ├── SKILL.md                   # Router + mode definitions
-│   └── modes/
-│       └── batch.md               # Batch mode implementation
+│   └── modes/                    # Mode implementations
 ├── scripts/                        # Python utilities
 │   └── pricing_analyzer.py        # Value scoring & change detection
 ├── templates/
 │   └── report/
-│       └── markdown/              # Markdown templates
+│       └── markdown/              # Report templates
 │           ├── swot-template-ai.md
 │           ├── swot-template-saas.md
-│           └── swot-template-fintech.md
+│           ├── swot-template-fintech.md
+│           └── pricing-deep-dive-template.md
 ├── modes/
-│   └── _industry-context.md      # Industry-specific SWOT questions
+│   ├── _industry-context.md      # Industry-specific SWOT questions
+│   ├── _shared.md                # Shared rules and scoring
+│   ├── _profile.md              # User customizations
+│   ├── add.md, analyze.md, batch.md, compare.md
+│   ├── pricing.md, pricing-deep-dive.md, report.md
+│   ├── track.md, update.md, monitor.md, pdf.md, png.md
 ├── data/
 │   ├── competitors.md              # Competitor tracker
-│   ├── batch-queue.md             # Batch queue (companies to analyze)
+│   ├── batch-queue.md             # Batch queue
 │   ├── batch-status.json          # Batch processing status
 │   ├── pricing-snapshots/         # JSON pricing snapshots
 │   │   └── {company}.json
 │   ├── reports/
-│   │   ├── {date}/               # Dated report directories
-│   │   │   ├── {company}-{date}.md
-│   │   │   ├── pricing-deep-dive-{company}-{date}.md
-│   │   │   └── consolidated-{date}.md
-│   │   └── pdf/                  # PDF exports
-│   │       └── {date}/
-│   │           └── {report}-{date}.pdf
-│   ├── snapshots/                 # Historical data for diff tracking
-│   │   ├── {company}/
-│   │   │   └── {date}.json
-│   │   └── pricing/              # Pricing change snapshots
-│   │       └── {company}.json
-│   └── .monitor-schedule.json     # Scheduled monitoring config
+│   │   ├── {date}/               # Dated reports
+│   │   └── latest/                # Symlinks to latest
+│   └── snapshots/                 # Historical snapshots
+└── exports/                        # PNG/PDF exports
+    └── index-{date}.png
 ```
 
 ---
@@ -223,21 +220,16 @@ competitive-ops-v2/
 
 ### Report File Structure
 
-Reports are organized by date, with `latest/` symlinks for easy access:
-
 ```
 data/reports/
 ├── 2026-04-07/
 │   ├── anthropic-2026-04-07.md
 │   ├── openai-2026-04-07.md
-│   ├── mistral-2026-04-07.md
-│   └── consolidated-2026-04-07.md   # Consolidated report
-├── latest/
-│   ├── anthropic.md → ../2026-04-07/anthropic-2026-04-07.md
-│   └── openai.md → ../2026-04-07/openai-2026-04-07.md
-└── html/
-    ├── index.html                   # Consolidated HTML
-    └── anthropic-2026-04-07.html   # Individual HTML reports
+│   ├── pricing-deep-dive-anthropic-2026-04-07.md
+│   └── consolidated-2026-04-07.md
+└── latest/                        # Symlinks to latest
+    ├── anthropic.md → ../2026-04-07/anthropic-2026-04-07.md
+    └── openai.md → ../2026-04-07/openai-2026-04-07.md
 ```
 
 ### Markdown Report
