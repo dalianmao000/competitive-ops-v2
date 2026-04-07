@@ -94,13 +94,13 @@ export TAVILY_API_KEY="tvly-xxxxx"
 |------|------|
 | `/competitive-ops setup` | 安装依赖并配置系统 |
 | `/competitive-ops add <公司>` | 添加竞品到追踪列表 |
-| `/competitive-ops analyze <公司> [--lang en\|zh-CN]` | 完整分析：SWOT + 评分 + HTML 报告 |
+| `/competitive-ops analyze <公司>` | 完整分析：SWOT + 评分 + HTML 报告 |
 | `/competitive-ops compare <A> vs <B>` | 横向功能矩阵对比 |
 | `/competitive-ops update <公司>` | 检查自上次分析以来的变化 |
 | `/competitive-ops pricing <公司>` | 定价研究 + 变化检测 |
 | `/competitive-ops pricing-deep-dive <公司>` | 定价深耕 + 价值评分 |
 | `/competitive-ops batch` | 批量处理多个竞品（支持 tier 1/2/3 过滤） |
-| `/competitive-ops report [--lang en\|zh-CN]` | 生成综合报告 |
+| `/competitive-ops report` | 生成综合报告 |
 | `/competitive-ops track` | 查看追踪面板 |
 | `/competitive-ops monitor [daily\|weekly\|monthly]` | 设置定时监控（使用 /loop 持续更新） |
 | `/competitive-ops pdf [报告]` | 导出报告为 PDF（使用 Playwright） |
@@ -139,20 +139,6 @@ export TAVILY_API_KEY="tvly-xxxxx"
 | 🟢 高 | 3+ 个来源一致 |
 | 🟡 中 | 2 个来源一致 |
 | 🔴 低 | 数据冲突或不足 |
-
-### 多语言报告
-
-支持中文和英文报告：
-
-```bash
-/competitive-ops report --lang zh-CN  # 中文报告
-/competitive-ops analyze Anthropic --lang en  # 英文分析
-```
-
-**语言检测优先级：**
-1. `--lang` 参数
-2. `config/profile.yml` → `language` 字段
-3. 默认：英文
 
 ### 行业模板
 
@@ -198,20 +184,13 @@ competitive-ops-v2/
 │   └── modes/
 │       └── batch.md               # 批处理模式实现
 ├── scripts/                        # Python 工具
-│   ├── pricing_analyzer.py        # 价值评分 + 变化检测
-│   └── i18n.py                   # 多语言支持
-├── i18n/                           # 翻译字符串
-│   ├── strings-en.md             # 英文字符串
-│   └── strings-zh-CN.md          # 中文字符串
+│   └── pricing_analyzer.py        # 价值评分 + 变化检测
 ├── templates/
 │   └── report/
-│       ├── markdown/              # Markdown 模板
-│       │   ├── swot-template-ai.md
-│       │   ├── swot-template-saas.md
-│       │   └── swot-template-fintech.md
-│       └── html/                  # HTML 模板
-│           ├── template-en.html
-│           └── template-zh-CN.html
+│       └── markdown/              # Markdown 模板
+│           ├── swot-template-ai.md
+│           ├── swot-template-saas.md
+│           └── swot-template-fintech.md
 ├── modes/
 │   └── _industry-context.md      # 行业特定 SWOT 问题
 ├── data/

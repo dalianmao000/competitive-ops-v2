@@ -96,13 +96,13 @@ claude
 |---------|-------------|
 | `/competitive-ops setup` | Install dependencies and configure system |
 | `/competitive-ops add <company>` | Add a competitor to tracking |
-| `/competitive-ops analyze <company> [--lang en\|zh-CN]` | Full analysis: SWOT + scoring + HTML report |
+| `/competitive-ops analyze <company>` | Full analysis: SWOT + scoring + HTML report |
 | `/competitive-ops compare <A> vs <B>` | Side-by-side feature matrix |
 | `/competitive-ops update <company>` | Check for changes since last analysis |
 | `/competitive-ops pricing <company>` | Pricing research with change detection |
 | `/competitive-ops pricing-deep-dive <company>` | Deep pricing analysis with value scoring |
 | `/competitive-ops batch` | Batch process multiple competitors (supports `tier 1/2/3` filter) |
-| `/competitive-ops report [--lang en\|zh-CN]` | Generate consolidated report |
+| `/competitive-ops report` | Generate consolidated report |
 | `/competitive-ops track` | View tracking dashboard |
 | `/competitive-ops monitor [daily\|weekly\|monthly]` | Set up scheduled monitoring (uses `/loop` for continuous updates) |
 | `/competitive-ops pdf [report]` | Export report to PDF (uses Playwright) |
@@ -141,20 +141,6 @@ Data is cross-validated from multiple sources:
 | 🟢 High | 3+ sources agree |
 | 🟡 Medium | 2 sources agree |
 | 🔴 Low | Conflicting or insufficient data |
-
-### Multi-Language Reports
-
-Reports can be generated in English or Chinese:
-
-```bash
-/competitive-ops report --lang zh-CN  # Chinese report
-/competitive-ops analyze Anthropic --lang en  # English analysis
-```
-
-**Language Detection Priority:**
-1. `--lang` flag
-2. `config/profile.yml` → `language` field
-3. Default: English
 
 ### Industry Templates
 
@@ -200,20 +186,13 @@ competitive-ops-v2/
 │   └── modes/
 │       └── batch.md               # Batch mode implementation
 ├── scripts/                        # Python utilities
-│   ├── pricing_analyzer.py        # Value scoring & change detection
-│   └── i18n.py                   # Multi-language support
-├── i18n/                           # Translation strings
-│   ├── strings-en.md             # English strings
-│   └── strings-zh-CN.md          # Chinese strings
+│   └── pricing_analyzer.py        # Value scoring & change detection
 ├── templates/
 │   └── report/
-│       ├── markdown/              # Markdown templates
-│       │   ├── swot-template-ai.md
-│       │   ├── swot-template-saas.md
-│       │   └── swot-template-fintech.md
-│       └── html/                  # HTML templates
-│           ├── template-en.html
-│           └── template-zh-CN.html
+│       └── markdown/              # Markdown templates
+│           ├── swot-template-ai.md
+│           ├── swot-template-saas.md
+│           └── swot-template-fintech.md
 ├── modes/
 │   └── _industry-context.md      # Industry-specific SWOT questions
 ├── data/
