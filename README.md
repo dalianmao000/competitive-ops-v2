@@ -22,10 +22,10 @@ Competitive-Ops is a **Claude Code Skill** — a slash-command extension that tu
 
 ### Pain Points Solved
 
-- Using ChatGPT for competitive analysis works, but **every session starts from scratch** — no history, no tracking
-- **No change detection** — pricing updates, new features, and market shifts go unnoticed until you manually re-research
-- Results are **scattered and inconsistent** — different formats each time, hard to compare across periods
-- **No structured monitoring** — no alerts when competitors make moves
+- **Ad-hoc analysis with no persistence** — Most teams use ChatGPT for competitive research, but every session begins from scratch with no historical record or structured tracking
+- **Zero change detection** — Pricing shifts, feature launches, and market movements go undetected until manually revisited
+- **Fragmented, incomparable outputs** — Inconsistent formats across sessions make cross-period analysis and benchmarking nearly impossible
+- **No operational cadence** — Competitive intelligence remains reactive and episodic rather than systematic and monitored
 
 ### What You Get
 
