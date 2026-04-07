@@ -22,20 +22,21 @@ Competitive-Ops is a **Claude Code Skill** — callable via `/competitive-ops` o
 
 ### Pain Points Solved
 
-- **Ad-hoc analysis with no persistence** — Most teams use ChatGPT for competitive research, but every session begins from scratch with no historical record or structured tracking
-- **Zero change detection** — Pricing shifts, feature launches, and market movements go undetected until manually revisited
-- **Fragmented, incomparable outputs** — Inconsistent formats across sessions make cross-period analysis and benchmarking nearly impossible
-- **No operational cadence** — Competitive intelligence remains reactive and episodic rather than systematic and monitored
+- **No historical persistence** — ChatGPT-based research starts fresh every session. Competitive insights disappear after each conversation.
+- **Blind to changes** — Pricing adjustments, product launches, and market shifts go unnoticed until manually rediscovered.
+- **Unstructured outputs** — Ad-hoc analysis produces inconsistent formats that resist aggregation, comparison, or trending.
+- **Reactive posture** — Competitive intelligence remains firefighting rather than systematic, continuous monitoring.
 
 ### What You Get
 
-Instead of manual research, you get an AI-powered pipeline:
+An AI-powered competitive intelligence pipeline:
 
-- **Analyzes competitors** with structured SWOT + 6-dimension scoring
-- **Generates professional reports** in Markdown + HTML
-- **Tracks changes** with alerts for pricing and feature updates
-- **Compares multiple competitors** side-by-side
-- **Processes in batch** — multi-agent parallelism (~3x speedup), each agent has independent context window (no cross-contamination)
+- **Structured analysis** — SWOT framework + 6-dimension scoring with industry-specific templates
+- **Professional reporting** — Markdown and HTML reports with ECharts visualizations
+- **Automatic change detection** — ANY pricing change triggers alerts (no threshold), feature deltas tracked over time
+- **Side-by-side comparison** — Multi-competitor matrix with scoring delta analysis
+- **Batch processing** — Multi-agent parallelism (~3x speedup), independent context windows per agent
+- **Deep pricing dive** — Value scoring (features/$) with market normalization
 
 ---
 
