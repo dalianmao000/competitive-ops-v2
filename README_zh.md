@@ -18,7 +18,16 @@ Claude Code 的 AI 竞争情报分析工具。
 
 ## 这是什么
 
-Competitive-Ops 将 Claude Code 变成**竞争情报指挥中心**。无需手动研究竞品，你得到的是一个 AI 驱动的流水线：
+Competitive-Ops 是一个 **Claude Code Skill** — 通过 slash command 扩展，将 Claude Code 变成**竞争情报指挥中心**。
+
+### 解决的痛点
+
+- 手动研究竞品**耗时且重复**
+- 跟踪 10+ 供应商的定价变化**不可能靠人工完成**
+- 竞品分析没有结构化格式 — 结果**分散且不一致**
+- 重新分析意味着每次都要**从头开始**
+
+### 功能
 
 - **分析竞品** — 结构化 SWOT + 六维评分
 - **生成专业报告** — Markdown + HTML

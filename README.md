@@ -18,13 +18,24 @@ AI-powered competitive analysis pipeline for Claude Code.
 
 ## What Is This
 
-Competitive-Ops turns Claude Code into a **competitive intelligence command center**. Instead of manually researching competitors, you get an AI-powered pipeline that:
+Competitive-Ops is a **Claude Code Skill** — a slash-command extension that turns Claude Code into a **competitive intelligence command center**.
 
-- **Analyzes competitors** with structured SWOT + scoring (10 dimensions)
-- **Generates professional reports** in Markdown + HTML + PDF
+### Pain Points Solved
+
+- Manually researching competitors is **time-consuming and repetitive**
+- Keeping up with pricing changes across 10+ providers is **impossible to do manually**
+- No structured format for competitive analysis — results are **scattered and inconsistent**
+- Re-running analysis means **starting from scratch** each time
+
+### What You Get
+
+Instead of manual research, you get an AI-powered pipeline:
+
+- **Analyzes competitors** with structured SWOT + 6-dimension scoring
+- **Generates professional reports** in Markdown + HTML
 - **Tracks changes** with alerts for pricing and feature updates
 - **Compares multiple competitors** side-by-side
-- **Processes in batch** — analyze 10+ competitors in parallel
+- **Processes in batch** — analyze 10+ competitors in parallel (~3x speedup)
 
 ---
 
