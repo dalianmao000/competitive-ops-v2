@@ -1,0 +1,51 @@
+<!-- Executive Summary Component -->
+<div class="bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-xl font-semibold mb-6 text-gray-900">执行摘要</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Score Card -->
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-white opacity-10"></div>
+            <div class="relative">
+                <div class="text-4xl font-bold">{score}</div>
+                <div class="text-sm text-blue-100 mt-1">综合评分</div>
+            </div>
+        </div>
+
+        <!-- Threat Level Card -->
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-{threat_color}-500 to-{threat_color}-600 p-6 text-white">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-white opacity-10"></div>
+            <div class="relative">
+                <div class="text-2xl font-bold">{threat_level}</div>
+                <div class="text-sm text-{threat_color}-100 mt-1">威胁等级</div>
+            </div>
+        </div>
+
+        <!-- Source Count Card -->
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-white opacity-10"></div>
+            <div class="relative">
+                <div class="text-4xl font-bold">{source_count}</div>
+                <div class="text-sm text-purple-100 mt-1">数据源</div>
+            </div>
+        </div>
+
+        <!-- Last Updated Card -->
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 p-6 text-white">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-white opacity-10"></div>
+            <div class="relative">
+                <div class="text-lg font-bold">{last_updated}</div>
+                <div class="text-sm text-gray-100 mt-1">最后更新</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confidence Badge -->
+    <div class="mt-6 flex items-center gap-3">
+        <span class="px-3 py-1.5 rounded-full text-sm font-medium {confidence_badge_class}">
+            Confidence: {confidence}
+        </span>
+        <span class="text-sm text-gray-500">
+            数据来源: {sources_count} 个渠道
+        </span>
+    </div>
+</div>

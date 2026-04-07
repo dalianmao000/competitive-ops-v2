@@ -1,0 +1,25 @@
+<!-- Pricing Comparison Component -->
+<div class="bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-xl font-semibold mb-6 text-gray-900">定价对比</h2>
+    <div class="grid grid-cols-1 md:grid-cols-{tier_count} gap-6">
+
+        {pricing_tiers}
+
+    </div>
+
+    <!-- Change Indicators Legend -->
+    <div class="mt-8 pt-6 border-t border-gray-200">
+        <h3 class="text-sm font-medium text-gray-700 mb-3">变更标识说明</h3>
+        <div class="flex gap-6 text-sm text-gray-600">
+            <span class="flex items-center gap-1">
+                <span class="text-green-500 font-bold">↑</span> 价格下降/功能增加
+            </span>
+            <span class="flex items-center gap-1">
+                <span class="text-red-500 font-bold">↓</span>价格上涨/功能减少
+            </span>
+            <span class="flex items-center gap-1">
+                <span class="text-gray-400">—</span> 无变化
+            </span>
+        </div>
+    </div>
+</div>
