@@ -33,16 +33,16 @@ Show this menu:
 competitive-ops -- Competitive Intelligence Command Center
 
 Available commands:
-  /comp add <company>      → Add competitor to tracking
-  /comp analyze <company>  → Full analysis: SWOT + scoring + HTML report
-  /comp compare <A> vs <B> → Side-by-side feature matrix
-  /comp update <company>   → Check for changes since last analysis
-  /comp pricing <company> → Pricing research with change detection
-  /comp batch              → Batch process multiple competitors
-  /comp report             → Generate consolidated report
-  /comp track             → View tracking dashboard
+  /competitive-ops add <company>      → Add competitor to tracking
+  /competitive-ops analyze <company>  → Full analysis: SWOT + scoring + HTML report
+  /competitive-ops compare <A> vs <B> → Side-by-side feature matrix
+  /competitive-ops update <company>   → Check for changes since last analysis
+  /competitive-ops pricing <company> → Pricing research with change detection
+  /competitive-ops batch              → Batch process multiple competitors
+  /competitive-ops report             → Generate consolidated report
+  /competitive-ops track             → View tracking dashboard
 
-First time? Run /comp setup to configure your company info.
+First time? Say "setup" to configure your company info.
 ```
 
 ---
@@ -137,11 +137,43 @@ When `{{mode}}` is `pricing`:
 
 When `{{mode}}` is `batch`:
 
-1. Read list of companies from `data/batch-queue.md` (or prompt user)
-2. Run analyze mode for each in parallel (max 5 concurrent)
-3. Track progress in `data/batch-status.json`
-4. Consolidate results
-5. Output batch summary
+1. Check for `data/batch-queue.md` file with list of companies
+2. If file doesn't exist, prompt user to create it
+3. Run analyze mode for each company in parallel (max 5 concurrent)
+4. Track progress in `data/batch-status.json`
+5. Consolidate results
+6. Output batch summary
+
+### Batch Queue Format
+
+Create `data/batch-queue.md`:
+
+```markdown
+# Batch Queue
+
+## Tier 1 (Direct Competitors)
+- Anthropic
+- OpenAI
+- Google DeepMind
+
+## Tier 2 (Indirect Competitors)
+- Mistral
+- Cohere
+- Meta AI
+
+## Tier 3 (Emerging)
+- Character.AI
+- Inflection
+```
+
+Or use CSV format in `data/batch-queue.csv`:
+
+```csv
+company,tier,priority
+Anthropic,1,high
+OpenAI,1,high
+Mistral,2,medium
+```
 
 ---
 
