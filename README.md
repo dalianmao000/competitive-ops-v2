@@ -22,10 +22,10 @@ Competitive-Ops is a **Claude Code Skill** — a slash-command extension that tu
 
 ### Pain Points Solved
 
-- Manually researching competitors is **time-consuming and repetitive**
-- Keeping up with pricing changes across 10+ providers is **impossible to do manually**
-- No structured format for competitive analysis — results are **scattered and inconsistent**
-- Re-running analysis means **starting from scratch** each time
+- Using ChatGPT for competitive analysis works, but **every session starts from scratch** — no history, no tracking
+- **No change detection** — pricing updates, new features, and market shifts go unnoticed until you manually re-research
+- Results are **scattered and inconsistent** — different formats each time, hard to compare across periods
+- **No structured monitoring** — no alerts when competitors make moves
 
 ### What You Get
 
