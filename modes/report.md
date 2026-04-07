@@ -14,10 +14,7 @@ Generate professional reports from competitor data.
 
 ## Language
 
-Reports can be generated in English (`en`) or Chinese (`zh-CN`).
-Use the `--lang` flag or configure `language` in `config/profile.yml`.
-
-See **Internationalization (i18n)** in `_shared.md` for language detection priority.
+Reports can be generated in English or Chinese. Use the `--lang` flag or configure `language` in `config/profile.yml`.
 
 ## Report Types
 

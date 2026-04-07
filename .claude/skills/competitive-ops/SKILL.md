@@ -30,19 +30,14 @@ Determine the mode from `{{mode}}`:
 
 ---
 
-## Language Detection
+## Language Selection
 
-Reports can be generated in English (`en`) or Chinese (`zh-CN`).
+Reports can be generated in English or Chinese. The LLM handles language generation natively.
 
-**Priority (highest to lowest):**
+**Language Selection:**
 1. `--lang` flag (e.g., `/comp report --lang zh-CN`)
 2. `config/profile.yml` `language` field
-3. HTTP `Accept-Language` header
-4. Default: `en`
-
-**Supported Languages:**
-- `en` -- English (default)
-- `zh-CN` -- Chinese (Simplified)
+3. Default: English
 
 **Usage Examples:**
 ```
@@ -50,11 +45,6 @@ Reports can be generated in English (`en`) or Chinese (`zh-CN`).
 /comp report html --lang zh-CN  # Chinese report
 /comp analyze Anthropic --lang zh-CN  # Chinese analysis
 ```
-
-**i18n Implementation:**
-- Translation files: `i18n/strings-{lang}.md`
-- Python module: `scripts/i18n.py` with `I18n` class
-- HTML templates: `templates/report/html/template-{lang}.html`
 
 ---
 
