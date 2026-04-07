@@ -164,9 +164,14 @@ When `{{mode}}` is `analyze`:
    - Cross-validate from multiple sources
 4. Generate SWOT analysis
 5. Score across 6 dimensions
-6. Generate report in `data/reports/{company}-{date}.md`
+6. Generate report in `data/reports/{date}/{company}-{date}.md`
    - **Always creates new file (never overwrites)**
-   - Latest report per company should also be symlinked/copied to `data/reports/latest/{company}.md` for easy access
+   - **Update symlink** to point to the new report:
+     ```bash
+     rm -f data/reports/latest/{company}.md
+     ln -s ../{date}/{company}-{date}.md data/reports/latest/{company}.md
+     ```
+     This ensures `latest/` always reflects the most recent analysis, regardless of date.
 7. **If `html` flag is present in args:**
    - Read the markdown report
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
@@ -188,7 +193,7 @@ When `{{mode}}` is `compare`:
 2. Load both companies' latest reports from `data/reports/latest/`
 3. Generate feature matrix comparison
 4. Score delta analysis
-5. Save comparison to `data/reports/compare-{A}-vs-{B}-{date}.md`
+5. Save comparison to `data/reports/{date}/compare-{A}-vs-{B}-{date}.md`
 6. **If `html` flag is present:**
    - Read the comparison markdown
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
@@ -231,7 +236,7 @@ When `{{mode}}` is `pricing`:
 3. Compare to `data/snapshots/pricing/{company}.json`
 4. If change detected, alert user with change details
 5. Update `data/snapshots/pricing/{company}.json`
-6. Save pricing report to `data/reports/pricing-{company}-{date}.md`
+6. Save pricing report to `data/reports/{date}/pricing-{company}-{date}.md`
 7. **If `html` flag is present:**
    - Read the pricing report markdown
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
@@ -243,14 +248,22 @@ When `{{mode}}` is `pricing`:
 
 ## Batch Mode
 
+**Multi-Agent Parallel Implementation** (see `modes/batch.md` for full details)
+
 When `{{mode}}` is `batch`:
 
-1. Check for `data/batch-queue.md` file with list of companies
-2. If file doesn't exist, prompt user to create it
-3. Run analyze mode for each company in parallel (max 5 concurrent)
-4. Track progress in `data/batch-status.json`
-5. Consolidate results
-6. Output batch summary
+1. Read optional tier filter from args (e.g., `batch tier 1` → only Tier 1)
+2. Check for `data/batch-queue.md` file with list of companies
+3. If file doesn't exist, prompt user to create it
+4. **Filter by tier if specified** (e.g., `tier 1` → only ## Tier 1 section)
+5. **Create agent team** using TeamCreate
+6. **Spawn parallel agents** - one per company (max 5 concurrent)
+7. Each agent runs full `analyze` workflow independently
+8. Track progress in `data/batch-status.json`
+9. Consolidate results from all agents
+10. Output batch summary
+
+**Key Feature:** Uses Claude Code multi-agent for ~3x speedup
 
 ### Batch Queue Format
 
@@ -291,7 +304,7 @@ When `{{mode}}` is `report`:
 
 1. Check for optional `html` flag and filters in args (company, date range)
 2. Aggregate all reports in `data/reports/`
-3. Generate consolidated report in `data/reports/consolidated-{date}.md`
+3. Generate consolidated report in `data/reports/{date}/consolidated-{date}.md`
 4. **If `html` flag is present in args:**
    - Read the consolidated markdown report
    - Use ui-ux-pro-max skill: `/skill ui-ux-pro-max`
@@ -359,13 +372,18 @@ Classify competitors into:
 
 ## Output Locations
 
+**规范结构：** 所有报告按日期归档到 `data/reports/{date}/` 目录，`latest/` 目录仅存 symlink。
+
 | Output | Location |
 |--------|----------|
-| Reports (all runs preserved) | `data/reports/{company}-{date}.md` |
-| Latest report per company | `data/reports/latest/{company}.md` |
-| HTML Reports | `data/reports/html/{company}-{date}.html` |
-| Snapshots (for update diff) | `data/snapshots/{company}/{date}.json` |
-| Screenshots (Playwright) | `data/reports/screenshots/{company}-{date}.png` |
+| 分析报告 | `data/reports/{date}/{company}-{date}.md` |
+| 最新报告 symlink | `data/reports/latest/{company}.md` → `../{date}/{company}-{date}.md` |
+| 对比报告 | `data/reports/{date}/compare-{A}-vs-{B}-{date}.md` |
+| 定价报告 | `data/reports/{date}/pricing-{company}-{date}.md` |
+| 综合报告 | `data/reports/{date}/consolidated-{date}.md` |
+| HTML 报告 | `data/reports/html/{company}-{date}.html` |
+| 快照 (update diff) | `data/snapshots/{company}/{date}.json` |
+| 截图 (Playwright) | `data/reports/screenshots/{company}-{date}.png` |
 
 **Snapshots用途:**
 - `update` 模式对比新旧报告的分数变化 (≥5% alert)
@@ -388,3 +406,23 @@ After routing, execute the selected mode by reading:
 - `modes/{mode}.md` for mode-specific instructions
 - `modes/_shared.md` for system context
 - `modes/_profile.md` for user customizations
+
+## Agent Implementation
+
+For **batch mode**, use multi-agent architecture:
+
+```
+/competitive-ops batch tier 1
+    ↓
+TeamCreate: competitive-batch-{timestamp}
+    ↓
+Agent analyzer-1 → analyze Anthropic (parallel)
+Agent analyzer-2 → analyze OpenAI (parallel)
+Agent analyzer-3 → analyze Google DeepMind (parallel)
+    ↓
+Wait for all agents to complete
+    ↓
+Consolidate results → output batch summary
+```
+
+Each agent executes independently using the `analyze` workflow.

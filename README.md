@@ -88,7 +88,7 @@ claude
 | `/competitive-ops compare <A> vs <B>` | Side-by-side feature matrix |
 | `/competitive-ops update <company>` | Check for changes since last analysis |
 | `/competitive-ops pricing <company>` | Pricing research with change detection |
-| `/competitive-ops batch` | Batch process multiple competitors |
+| `/competitive-ops batch` | Batch process multiple competitors (supports `tier 1/2/3` filter) |
 | `/competitive-ops report` | Generate consolidated report |
 | `/competitive-ops track` | View tracking dashboard |
 
@@ -132,61 +132,87 @@ Data is cross-validated from multiple sources:
 
 ```
 competitive-ops-v2/
-├── CLAUDE.md                    # Agent instructions
-├── cv.md                       # Your product definition
-├── config/                     # Configuration files
-│   ├── profile.yml            # Company/product config
-│   ├── sources.yml            # Trusted data sources
-│   ├── pricing-alerts.yml     # Pricing monitoring
-│   └── change-detection.yml    # Change thresholds
-├── modes/                      # 10 Skill modes
-│   ├── _shared.md             # Shared context
-│   ├── _profile.md            # User customization
-│   └── *.md                   # Individual modes
-├── scripts/                    # Python utilities
-│   ├── cross_validate.py      # Multi-source validation
-│   └── change_detector.py      # Change tracking
-├── templates/
-│   └── report/
-│       └── html/              # HTML templates
-└── data/
-    └── competitors.md          # Competitor tracker
+├── CLAUDE.md                        # Project instructions
+├── cv.md                           # Your product definition (user layer)
+├── config/
+│   └── profile.yml                # Company/product config (user layer)
+├── .claude/skills/competitive-ops/ # Skill definitions
+│   ├── SKILL.md                   # Router + mode definitions
+│   └── modes/
+│       └── batch.md               # Batch mode implementation
+├── scripts/                        # Python utilities
+├── data/
+│   ├── competitors.md              # Competitor tracker
+│   ├── batch-queue.md             # Batch queue (companies to analyze)
+│   ├── batch-status.json          # Batch processing status
+│   ├── reports/
+│   │   ├── {date}/               # Dated report directories
+│   │   │   ├── {company}-{date}.md
+│   │   │   └── consolidated-{date}.md
+│   │   ├── latest/               # Symlinks to latest reports
+│   │   │   └── {company}.md → ../{date}/{company}-{date}.md
+│   │   └── html/                 # HTML reports
+│   │       ├── {company}-{date}.html
+│   │       └── index.html        # Consolidated HTML report
+│   └── snapshots/                 # Historical data for diff tracking
+│       └── {company}/
+│           └── {date}.json
 ```
 
 ---
 
 ## Output Examples
 
+### Report File Structure
+
+Reports are organized by date, with `latest/` symlinks for easy access:
+
+```
+data/reports/
+├── 2026-04-07/
+│   ├── anthropic-2026-04-07.md
+│   ├── openai-2026-04-07.md
+│   ├── mistral-2026-04-07.md
+│   └── consolidated-2026-04-07.md   # Consolidated report
+├── latest/
+│   ├── anthropic.md → ../2026-04-07/anthropic-2026-04-07.md
+│   └── openai.md → ../2026-04-07/openai-2026-04-07.md
+└── html/
+    ├── index.html                   # Consolidated HTML
+    └── anthropic-2026-04-07.html   # Individual HTML reports
+```
+
 ### Markdown Report
 
 ```markdown
-# Competitor Analysis: Anthropic
+# Competitive Analysis: Anthropic
 
-**Score: 4.2/5** | **Confidence: High** | **Updated: 2026-04-07**
+**Date:** 2026-04-07
+**Tier:** 1 (Direct Competitor)
+**Overall Score:** 79.6 / 100
+**Confidence:** High (multiple source validation)
 
-## SWOT Analysis
+## Scoring Matrix
 
-### Strengths
-- Strong AI research background
-- Claude model performance
-- Safety-first positioning
-
-### Weaknesses
-- Limited enterprise features
-- Newer to market
-- Smaller team
-
-...
+| Dimension | Score | Weight | Weighted |
+|-----------|-------|--------|----------|
+| Product Maturity | 4.6 | 20% | 0.92 |
+| Feature Coverage | 4.6 | 20% | 0.92 |
+| Pricing | 4.3 | 15% | 0.645 |
+| Market Presence | 4.1 | 15% | 0.615 |
+| Growth Trajectory | 4.5 | 10% | 0.45 |
+| Brand Strength | 4.3 | 10% | 0.43 |
+| **TOTAL** | | **100%** | **3.98 → 79.6** |
 ```
 
 ### HTML Report
 
-Professional, responsive HTML reports with:
-- Executive summary cards
-- SWOT visualization (4-quadrant grid)
-- Feature comparison matrix
-- Pricing tier cards
-- Confidence indicators
+Professional, responsive HTML reports with Tailwind dark theme:
+- Executive summary with score overview
+- Scoring matrix with progress bars
+- SWOT analysis in 4-quadrant grid
+- Key findings and risk assessment
+- Consolidated index with all competitor comparisons
 
 ---
 
