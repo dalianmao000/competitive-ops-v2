@@ -16,35 +16,17 @@ Determine the mode from `{{mode}}`:
 | (empty / no args) | `discovery` -- Show command menu |
 | `setup` | `setup` -- Install dependencies and configure system |
 | `add <company>` | `add` -- Add competitor to tracking |
-| `analyze <company> [html] [--lang en\|zh-CN]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output, `--lang` for language) |
+| `analyze <company> [html]` | `analyze` -- Full analysis with SWOT + report (add `html` for HTML output) |
 | `compare <A> vs <B> [html]` | `compare` -- Side-by-side comparison (add `html` for HTML output) |
 | `update <company>` | `update` -- Check for changes |
 | `pricing <company> [html]` | `pricing` -- Pricing research (add `html` for HTML output) |
 | `pricing-deep-dive <company>` | `pricing-deep-dive` -- Deep pricing analysis with value scoring |
 | `batch` | `batch` -- Batch processing |
-| `report [html] [--lang en\|zh-CN]` | `report` -- Generate consolidated report (add `html` for HTML output, `--lang` for language) |
+| `report [html]` | `report` -- Generate consolidated report (add `html` for HTML output) |
 | `track` | `track` -- View tracking dashboard |
 | `monitor [interval]` | `monitor` -- Set up scheduled monitoring (default: weekly) |
 | `pdf [report]` | `pdf` -- Export report to PDF |
 | `png [report]` | `png` -- Export report to PNG image |
-
----
-
-## Language Selection
-
-Reports can be generated in English or Chinese. The LLM handles language generation natively.
-
-**Language Selection:**
-1. `--lang` flag (e.g., `/comp report --lang zh-CN`)
-2. `config/profile.yml` `language` field
-3. Default: English
-
-**Usage Examples:**
-```
-/comp report html --lang en     # English report
-/comp report html --lang zh-CN  # Chinese report
-/comp analyze Anthropic --lang zh-CN  # Chinese analysis
-```
 
 ---
 

@@ -9,12 +9,8 @@ Generate professional reports from competitor data.
 /comp report <company-name>
 /comp report --filter <company1>,<company2>
 /comp report --date <start-date>:<end-date>
-/comp report html --lang en|zh-CN
+/comp report html
 ```
-
-## Language
-
-Reports can be generated in English or Chinese. Use the `--lang` flag or configure `language` in `config/profile.yml`.
 
 ## Report Types
 
