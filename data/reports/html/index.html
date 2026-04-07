@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 竞争格局综合报告 -- 2026-04-07</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <header class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">AI 竞争格局综合报告</h1>
+                    <p class="text-xl text-blue-400">Competitive Intelligence Consolidated</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-400">2026-04-07</p>
+                    <p class="text-sm text-gray-400">7 家公司 | Tier 1+2</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Executive Summary -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                执行摘要
+            </h2>
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-1">Tier 1 均分</p>
+                        <p class="text-4xl font-bold text-green-400">81.4</p>
+                        <p class="text-xs text-gray-500">直接竞争者</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-1">Tier 2 均分</p>
+                        <p class="text-4xl font-bold text-blue-400">74.7</p>
+                        <p class="text-xs text-gray-500">间接竞争者</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-1">覆盖公司</p>
+                        <p class="text-4xl font-bold text-purple-400">7</p>
+                        <p class="text-xs text-gray-500">Tier 1: 3 | Tier 2: 4</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 pt-4">
+                    <h3 class="text-sm font-semibold text-white mb-3">2026年4月核心主题</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-gray-800 rounded-lg p-3">
+                            <p class="text-yellow-400 text-sm font-semibold mb-1">1. 价格战加剧</p>
+                            <p class="text-gray-400 text-xs">Anthropic Opus降价67%，OpenAI o3降价80%，API价格战白热化</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3">
+                            <p class="text-green-400 text-sm font-semibold mb-1">2. 开源崛起</p>
+                            <p class="text-gray-400 text-xs">Llama 10亿+下载，Mistral Apache 2.0主导欧洲开源市场</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3">
+                            <p class="text-blue-400 text-sm font-semibold mb-1">3. 企业AI成战场</p>
+                            <p class="text-gray-400 text-xs">所有Tier 1都在推agentic企业方案，企业RAG成差异化关键</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rankings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                综合排名
+            </h2>
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">排名</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">公司</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">Tier</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">评分</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">类型</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-400">置信度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">1</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">OpenAI</span></td>
+                                <td class="py-3 px-4"><span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded">Tier 1</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-green-400">82.3</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">直接竞争 / 参考基准</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">2</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">Google DeepMind</span></td>
+                                <td class="py-3 px-4"><span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded">Tier 1</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-green-400">82.3</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">直接竞争 / 生态系统</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">3</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">Anthropic</span></td>
+                                <td class="py-3 px-4"><span class="bg-red-900 text-red-300 text-xs px-2 py-1 rounded">Tier 1</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-green-400">79.6</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">直接竞争</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">4</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">Mistral</span></td>
+                                <td class="py-3 px-4"><span class="bg-yellow-900 text-yellow-300 text-xs px-2 py-1 rounded">Tier 2</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-blue-400">78.5</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">欧洲开源替代</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">5</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">xAI</span></td>
+                                <td class="py-3 px-4"><span class="bg-yellow-900 text-yellow-300 text-xs px-2 py-1 rounded">Tier 2</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-purple-400">78.0</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">新兴威胁</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">6</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">Meta AI</span></td>
+                                <td class="py-3 px-4"><span class="bg-yellow-900 text-yellow-300 text-xs px-2 py-1 rounded">Tier 2</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-blue-400">74.7</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">邻近 / 开源基准</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-800/50">
+                                <td class="py-3 px-4 text-white font-semibold">7</td>
+                                <td class="py-3 px-4"><span class="text-white font-medium">Cohere</span></td>
+                                <td class="py-3 px-4"><span class="bg-yellow-900 text-yellow-300 text-xs px-2 py-1 rounded">Tier 2</span></td>
+                                <td class="py-3 px-4"><span class="text-2xl font-bold text-gray-400">68.0</span></td>
+                                <td class="py-3 px-4 text-gray-400 text-sm">企业RAG间接竞争</td>
+                                <td class="py-3 px-4"><span class="text-green-400">🟢 High</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Score Matrix -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                六维评分矩阵
+            </h2>
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left py-3 px-3 text-sm font-medium text-gray-400">公司</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">产品成熟度</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">功能覆盖</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">定价</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">市场存在</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">增长轨迹</th>
+                                <th class="text-center py-3 px-3 text-sm font-medium text-gray-400">品牌实力</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">OpenAI</td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">96</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">97</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">68</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">98</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">98</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Google DeepMind</td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">94</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">88</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">92</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">95</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Anthropic</td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">92</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">93</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">85</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">82</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">85</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Mistral</td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">xAI</td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">84</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Meta AI</td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">84</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">96</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-green-400 font-semibold">90</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-red-400 font-semibold">60</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-3 text-white font-medium">Cohere</td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-yellow-400 font-semibold">70</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-blue-400 font-semibold">80</span></td>
+                                <td class="py-3 px-3 text-center"><span class="text-red-400 font-semibold">60</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Landscape -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                API 定价格局 (每 1M tokens)
+            </h2>
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left py-3 px-3 text-sm font-medium text-gray-400">公司</th>
+                                <th class="text-left py-3 px-3 text-sm font-medium text-gray-400">模型</th>
+                                <th class="text-right py-3 px-3 text-sm font-medium text-gray-400">输入</th>
+                                <th class="text-right py-3 px-3 text-sm font-medium text-gray-400">输出</th>
+                                <th class="text-left py-3 px-3 text-sm font-medium text-gray-400">备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800 bg-green-900/20">
+                                <td class="py-3 px-3 text-white font-medium">Meta AI</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Llama (via partners)</td>
+                                <td class="py-3 px-3 text-right text-green-400 font-bold">$0.00022</td>
+                                <td class="py-3 px-3 text-right text-gray-500">-</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">最便宜</td>
+                            </tr>
+                            <tr class="border-b border-gray-800 bg-green-900/10">
+                                <td class="py-3 px-3 text-white font-medium">Google</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Gemini 3.1 Flash</td>
+                                <td class="py-3 px-3 text-right text-green-400 font-bold">$0.10</td>
+                                <td class="py-3 px-3 text-right text-green-400">$0.40</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">Tier 1 最低价</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">xAI</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Grok 4.1 Fast</td>
+                                <td class="py-3 px-3 text-right text-green-400 font-bold">$0.20</td>
+                                <td class="py-3 px-3 text-right text-gray-500">-</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">激进定价</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Mistral</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Large 3</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">~$2</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">~$6</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">定价不透明</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">OpenAI</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">GPT-5 Mini</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$0.25</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$2.00</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">Batch: $0.625/$5</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">OpenAI</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">GPT-5</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$1.25</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$10.00</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">标准定价</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Anthropic</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Haiku 3.5</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$0.80</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$4.00</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">入门级</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="py-3 px-3 text-white font-medium">Anthropic</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Sonnet 4.6</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$3.00</td>
+                                <td class="py-3 px-3 text-right text-yellow-400">$15.00</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">中端</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-3 text-white font-medium">Anthropic</td>
+                                <td class="py-3 px-3 text-gray-400 text-sm">Opus 4.6</td>
+                                <td class="py-3 px-3 text-right text-blue-400">$5.00</td>
+                                <td class="py-3 px-3 text-right text-blue-400">$25.00</td>
+                                <td class="py-3 px-3 text-gray-400 text-xs">高端 (降价67%)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">API 定价跨越 3 个数量级 ($0.00022 - $25)，价格战白热化</p>
+            </div>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                核心战略洞察
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-900 rounded-xl p-6 border border-yellow-800">
+                    <h3 class="text-lg font-semibold text-yellow-400 mb-3">价格战加剧</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Anthropic Opus 降价 67% ($15→$5 输入)</li>
+                        <li>• OpenAI o3 降价 80%</li>
+                        <li>• Google 推出 Flex/Priority/Batch/Caching 分层</li>
+                        <li>• Meta Llama 托管 API $0.00022/1M (比高端便宜100倍)</li>
+                    </ul>
+                    <p class="text-gray-500 text-xs mt-3">影响：专有模型利润率承压，差异化转向可靠性、安全性、生态整合</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-green-800">
+                    <h3 class="text-lg font-semibold text-green-400 mb-3">开源正在重塑企业</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Llama: 10亿+下载，主导开源权重生态</li>
+                        <li>• Mistral: Apache 2.0，欧洲数据主权定位</li>
+                        <li>• Google Gemma 4: "按字节最强大"开源模型</li>
+                        <li>• 企业越来越多考虑自托管以降低成本</li>
+                    </ul>
+                    <p class="text-gray-500 text-xs mt-3">影响：仅靠API存活的商业模式面临商品化压力</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-blue-800">
+                    <h3 class="text-lg font-semibold text-blue-400 mb-3">上下文窗口军备竞赛</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• xAI Grok: 200万 tokens (最大)</li>
+                        <li>• Meta Llama 4 Scout: 1000万 tokens (声称)</li>
+                        <li>• Gemini 3.1: 256k tokens</li>
+                        <li>• Claude: 200k tokens</li>
+                    </ul>
+                    <p class="text-gray-500 text-xs mt-3">影响：长上下文成为企业RAG用例的标配</p>
+                </div>
+                <div class="bg-gray-900 rounded-xl p-6 border border-purple-800">
+                    <h3 class="text-lg font-semibold text-purple-400 mb-3">企业AI是主战场</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• 所有Tier 1都在激进推企业agentic方案</li>
+                        <li>• 垂直合作: Mistral+ASML/HSBC, Cohere+Oracle/Dell</li>
+                        <li>• 主权AI叙事: Mistral欧盟, Cohere加拿大</li>
+                        <li>• AI代码代理成新战场 (OpenAI Codex, Claude Code, Gemini)</li>
+                    </ul>
+                    <p class="text-gray-500 text-xs mt-3">影响：2026年企业AI采用率将加速</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Actions -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                建议行动
+            </h2>
+            <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-red-900 text-red-400 flex items-center justify-center font-bold mr-4 flex-shrink-0">1</div>
+                        <div>
+                            <p class="text-white font-medium">密切关注 xAI</p>
+                            <p class="text-gray-400 text-sm">激进定价 + X平台整合 + Musk资源 = 成本敏感细分市场的潜在颠覆</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-yellow-900 text-yellow-400 flex items-center justify-center font-bold mr-4 flex-shrink-0">2</div>
+                        <div>
+                            <p class="text-white font-medium">关注 Cohere 上市</p>
+                            <p class="text-gray-400 text-sm">2026年预期IPO可能加速企业AI市场份额变化</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-blue-900 text-blue-400 flex items-center justify-center font-bold mr-4 flex-shrink-0">3</div>
+                        <div>
+                            <p class="text-white font-medium">应对价格下调</p>
+                            <p class="text-gray-400 text-sm">Anthropic (-67%) 和 OpenAI (-80%) 的API定价压力可能需要策略调整</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-green-900 text-green-400 flex items-center justify-center font-bold mr-4 flex-shrink-0">4</div>
+                        <div>
+                            <p class="text-white font-medium">欧洲市场机会</p>
+                            <p class="text-gray-400 text-sm">Mistral的定位可能创造合作或竞争压力，取决于目标市场</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm border-t border-gray-800 pt-6">
+            <p>competitive-ops v2 综合报告</p>
+            <p class="mt-1">2026-04-07 | 7 家公司 | Tier 1 + Tier 2</p>
+            <p class="mt-1">下次更新建议: 30天内</p>
+            <div class="mt-3 flex justify-center gap-4 flex-wrap">
+                <a href="anthropic-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">Anthropic</a>
+                <a href="openai-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">OpenAI</a>
+                <a href="google-deepmind-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">Google DeepMind</a>
+                <a href="mistral-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">Mistral</a>
+                <a href="xAI-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">xAI</a>
+                <a href="meta-ai-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">Meta AI</a>
+                <a href="cohere-2026-04-07.html" class="text-blue-400 hover:text-blue-300 text-xs">Cohere</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
