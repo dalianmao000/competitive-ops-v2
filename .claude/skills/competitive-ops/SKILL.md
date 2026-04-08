@@ -1,8 +1,16 @@
 ---
 name: competitive-ops
 description: AI competitive intelligence pipeline -- analyze competitors, generate reports, track changes
-user_invocable: true
-args: mode company
+author:
+  name: 大脸猫
+  email: ""
+category: productivity
+homepage: https://github.com/dalianmao000/competitive-ops-v2
+tags:
+  - competitive-analysis
+  - intelligence
+  - market-research
+  - reporting
 ---
 
 # Competitive-Ops -- Router
