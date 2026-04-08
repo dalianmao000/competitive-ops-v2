@@ -315,5 +315,4 @@ MIT — 可自由使用、修改和分发。
 
 ## 相关
 
-- [Career-Ops](https://github.com/santifer/career-ops) — 求职流水线（灵感来源）
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — AI 编程助手

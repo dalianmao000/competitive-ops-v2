@@ -322,6 +322,5 @@ MIT — free to use, modify, and distribute.
 
 ## Related
 
-- [Career-Ops](https://github.com/santifer/career-ops) — Job search pipeline (this project's inspiration)
 - [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) — Design system for AI agents
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — AI coding assistant
